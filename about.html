@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>About • FoodieR</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header id="site-header" class="container">
+      <a class="logo" href="index.html"
+        ><img src="assets/photos/logo.jpg" alt="FoodieR" /><span
+          >FoodieR</span
+        ></a
+      >
+      <nav id="main-nav">
+        <button id="burger" aria-label="Menu" aria-expanded="false">☰</button>
+        <ul id="nav-list">
+          <li><a data-i18n="nav.home" href="index.html">Home</a></li>
+          <li><a data-i18n="nav.about" href="about.html">About</a></li>
+          <li><a data-i18n="nav.products" href="products.html">Recipes</a></li>
+          <li><a data-i18n="nav.blog" href="blog.html">Blog</a></li>
+          <li>
+            <button id="open-cart" class="pill" data-i18n="nav.shop">
+              Shop
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <div class="search">
+          <input
+            id="search-input"
+            type="search"
+            placeholder="Search recipes, ingredients, etc..."
+            aria-label="Search"
+          />
+        </div>
+        <button id="toggle-lang" class="ghost" aria-label="RO/EN">RO/EN</button>
+        <button id="toggle-theme" class="ghost" aria-label="Dark/Light">
+          🌓
+        </button>
+        <button id="login-btn" class="accent" data-i18n="auth.login">
+          Log in
+        </button>
+        <button id="logout-btn" class="ghost hidden" data-i18n="auth.logout">
+          Logout
+        </button>
+      </div>
+    </header>
+
+    <main class="container narrow">
+      <h1 data-i18n="about.pageTitle">About</h1>
+
+      <section class="split">
+        <div>
+          <h2 data-i18n="about.me.title">About me</h2>
+          <p data-i18n="about.me.text">
+            Eu sunt <strong>FoodieR</strong>, pasionată de nutriție și gătit
+            creativ. Am regândit rețete clasice în versiuni echilibrate caloric,
+            fără a sacrifica gustul.
+          </p>
+          <ul class="checklist">
+            <li data-i18n="about.me.check1">Rețete testate, cu pași clari</li>
+            <li data-i18n="about.me.check2">
+              Alternative mai sănătoase pentru ingrediente
+            </li>
+            <li data-i18n="about.me.check3">
+              Focus pe echilibru: sațietate + savoare
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 data-i18n="about.foodier.title">About FoodieR</h2>
+          <p data-i18n="about.story">
+            FoodieR este proiectul meu de suflet: un magazin de rețete
+            low-calorie, structurat pe nevoi, momente ale zilei și preferințe
+            alimentare.
+          </p>
+          
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-columns">
+        <div class="col brand">
+          <a class="logo" href="index.html">
+            <img src="assets/photos/logo.jpg" alt="FoodieR" />
+            <span>FoodieR</span>
+          </a>
+          <p class="muted" data-i18n="footer.tagline">
+            Rețete low-calories, regândite ca să fie sănătoase și gustoase.
+            Calitate, echilibru și savoare, pe înțelesul tuturor.
+          </p>
+        </div>
+
+        <div class="col links">
+          <h4 data-i18n="footer.quickLinks">Quick Links</h4>
+          <ul>
+            <li><a data-i18n="nav.home" href="index.html">Home</a></li>
+            <li><a data-i18n="nav.about" href="about.html">About</a></li>
+            <li>
+              <a data-i18n="nav.products" href="products.html">Products</a>
+            </li>
+            <li>
+              <a data-i18n="nav.sale" href="products.html#special">Sale</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col contact">
+          <h4 data-i18n="footer.contactInfo">Contact Info</h4>
+          <ul class="contact-list">
+            <li>
+              <img class="icon" src="assets/icons/mail.svg" alt="" />
+              <a href="mailto:contact@foodier.ro">contact@foodier.ro</a>
+            </li>
+            <li>
+              <img class="icon" src="assets/icons/phone.svg" alt="" />
+              <a href="tel:+40700000000">+40 700 000 000</a>
+            </li>
+            <li class="social">
+              <a href="#" aria-label="Facebook" class="social-btn"
+                ><img class="icon" src="assets/icons/facebook.svg" alt=""
+              /></a>
+              <a href="#" aria-label="Twitter" class="social-btn"
+                ><img class="icon" src="assets/icons/twitter.svg" alt=""
+              /></a>
+              <a href="#" aria-label="Instagram" class="social-btn"
+                ><img class="icon" src="assets/icons/instagram.svg" alt=""
+              /></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="footer-sep" />
+      <div class="container footer-bottom">
+        <p>
+          © <span id="year"></span> FoodieR.
+          <span data-i18n="footer.rights">All rights reserved.</span>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blog • FoodieR</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header id="site-header" class="container">
+      <a class="logo" href="index.html"
+        ><img src="assets/photos/logo.jpg" alt="FoodieR" /><span
+          >FoodieR</span
+        ></a
+      >
+      <nav id="main-nav">
+        <button id="burger" aria-label="Menu" aria-expanded="false">☰</button>
+        <ul id="nav-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="recipe.html">Recipes</a></li>
+          <li><a class="active" href="blog.html">Blog</a></li>
+          <li><button id="open-cart" class="pill">Shop</button></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <button id="toggle-lang" class="ghost">RO/EN</button>
+        <button id="toggle-theme" class="ghost">🌓</button>
+        <button id="login-btn" class="accent">Log in</button>
+        <button id="logout-btn" class="ghost hidden">Logout</button>
+      </div>
+    </header>
+
+    <main class="container">
+      <h1>Diverse</h1>
+
+      <section id="blog">
+        <h2>Hrană pentru suflet și minte (Blog)</h2>
+        <div id="blog-list" class="cards-grid"></div>
+      </section>
+
+      <section id="index-alfabetic">
+        <h2>Index alfabetic</h2>
+        <div id="alpha-index" class="alpha-index"></div>
+        <div id="alpha-results" class="cards-grid"></div>
+      </section>
+
+      <section id="meniuri">
+        <h2>Meniuri</h2>
+        <div class="cards-grid" id="menus-grid"></div>
+      </section>
+    </main>
+
+  <footer class="site-footer">
+      <div class="container footer-columns">
+        <div class="col brand">
+          <a class="logo" href="index.html">
+            <img src="assets/photos/logo.jpg" alt="FoodieR" />
+            <span>FoodieR</span>
+          </a>
+         <p class="muted">
+            Rețete low-calories, regândite ca să fie sănătoase și
+            gustoase. Calitate, echilibru și savoare, pe înțelesul tuturor.
+          </p>
+        </div>
+
+        <div class="col links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="recipe.html">Recipes</a></li>
+            <li><a href="products.html#special">Sale</a></li>
+          </ul>
+        </div>
+
+        <div class="col contact">
+            
+  <h4>Contact Info</h4>
+  <ul class="contact-list">
+    <li>
+      <img class="icon" src="assets/icons/mail.svg" alt="">
+      <a href="mailto:contact@foodier.ro">contact@foodier.ro</a>
+    </li>
+    <li>
+      <img class="icon" src="assets/icons/phone.svg" alt="">
+      <a href="tel:+40700000000">+40 700 000 000</a>
+    </li>
+    <li class="social">
+      <a href="#" aria-label="Facebook" class="social-btn"><img class="icon" src="assets/icons/facebook.svg" alt=""></a>
+      <a href="#" aria-label="Twitter"  class="social-btn"><img class="icon" src="assets/icons/twitter.svg"  alt=""></a>
+      <a href="#" aria-label="Instagram" class="social-btn"><img class="icon" src="assets/icons/instagram.svg" alt=""></a>
+    </li>
+  </ul>
+</div>
+
+      <hr class="footer-sep" />
+      <div class="container footer-bottom">
+        <p>© <span id="year"></span> FoodieR. All rights reserved.</p>
+      </div>
+    </footer>
+
+
+    <!-- Shared elements -->
+    <aside id="cart-drawer" aria-hidden="true">
+      <div class="cart-header">
+        <h3>Coș</h3>
+        <button id="close-cart">✕</button>
+      </div>
+      <div id="cart-items"></div>
+      <div class="cart-footer">
+        <div class="cart-summary">
+          <span>Subtotal</span><strong id="cart-total">0</strong>
+        </div>
+        <p id="bogo-msg" class="muted"></p>
+        <button id="checkout" class="accent">Plătește</button>
+      </div>
+    </aside>
+    <dialog id="auth-modal">
+      <form method="dialog" class="auth-card" id="auth-form">
+        <h3>Autentificare</h3>
+        <label
+          ><span>Email</span
+          ><input type="email" id="auth-email" required /></label
+        ><label
+          ><span>Parolă</span
+          ><input type="password" id="auth-pass" minlength="4" required
+        /></label>
+        <div class="auth-actions">
+          <button class="accent" id="auth-login">Log in</button
+          ><button class="ghost" id="auth-signup" type="button">
+            Creează cont
+          </button>
+        </div>
+        <button class="link" value="cancel">Anulează</button>
+      </form>
+    </dialog>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
