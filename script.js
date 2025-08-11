@@ -793,3 +793,286 @@ function init() {
 }
 
 document.addEventListener("DOMContentLoaded", init);
+
+// ===== Helpers pentru carduri =====
+function recipeTags(r) {
+  const tags = [];
+  // poți adapta după câmpurile tale
+  if (r.category === "main") tags.push("entree");
+  if (r.category === "dessert") tags.push("dessert");
+  if (r.category === "soup") tags.push("soup");
+  if (r.vegan) tags.push("vegan");
+  if (r.glutenFree) tags.push("gluten-free");
+  if (r.rice) tags.push("rice");
+  return tags;
+}
+
+function recipeCardHTML(r, section) {
+  const owned = State.owned.includes(r.id);
+  const title = r.lang?.[State.lang] || r.title;
+
+  // arată badge-ul SALE doar în lista "sale"
+  const saleTag =
+    section === "sale" && r.sale
+      ? `<span class="tag tag-accent">SALE</span>`
+      : "";
+
+  // arată prețul vechi DOAR în "sale"
+  const price = r.free
+    ? ""
+    : section === "sale" && r.oldPrice
+    ? `<span class="price-old">${money(r.oldPrice)}</span>
+         <span class="price-badge">${money(r.price)}</span>`
+    : `<span class="price-badge">${money(r.price)}</span>`;
+
+  const cta = r.free
+    ? `<button class="pill" onclick="location.href='recipe.html?id=${r.id}'">Deschide</button>`
+    : `<button class="accent" data-buy="${r.id}">${
+        owned ? "Vizualizează" : "Cumpără"
+      }</button>`;
+
+  return `
+  <article class="recipe-card" data-id="${r.id}">
+    <div class="thumb"><img src="${r.img}" alt="${title}" loading="lazy"></div>
+    <div class="body">
+      <h3 class="title">${title}</h3>
+      <p class="excerpt">"${r.teaser || ""}"</p>
+      <div class="tags">
+        ${saleTag}
+        ${recipeTags(r)
+          .map((t) => `<span class="tag">${t}</span>`)
+          .join("")}
+        ${r.vegetarian && !r.vegan ? '<span class="tag">vegetarian</span>' : ""}
+      </div>
+      <div class="meta">By ${r.author || "FoodieR"}</div>
+    </div>
+    <div class="footer">
+      ${price}
+      <div class="card-actions">
+        ${cta}
+        <button class="ghost" onclick="location.href='recipe.html?id=${
+          r.id
+        }'">Detalii</button>
+      </div>
+    </div>
+  </article>`;
+}
+
+function bindCardActions(wrapper) {
+  wrapper.querySelectorAll("[data-buy]").forEach((btn) => {
+    const id = btn.getAttribute("data-buy");
+    btn.addEventListener("click", () => {
+      const r = RECIPES.find((x) => x.id === id);
+      const owned = State.owned.includes(id);
+      if (owned) location.href = `recipe.html?id=${id}`;
+      else addToCart(id);
+    });
+  });
+}
+
+// ====== Renderers noi ======
+function renderPaidCarousel() {
+  // păstrăm numele pentru compatibilitate
+  const grid = document.getElementById("paid-grid");
+  if (!grid) return;
+  grid.innerHTML = RECIPES.filter((r) => !r.free)
+    .map((r) => recipeCardHTML(r, "paid"))
+    .join("");
+  bindCardActions(grid);
+}
+
+function renderFreeGrid() {
+  const grid = document.getElementById("free-grid");
+  if (!grid) return;
+  grid.innerHTML = RECIPES.filter((r) => r.free)
+    .map((r) => recipeCardHTML(r, "free"))
+    .join("");
+  bindCardActions(grid);
+}
+
+function renderSaleGrid() {
+  const grid = document.getElementById("sale-grid");
+  if (!grid) return;
+  grid.innerHTML = RECIPES.filter((r) => r.sale)
+    .map((r) => recipeCardHTML(r, "sale"))
+    .join("");
+  bindCardActions(grid);
+}
+
+function markActiveNav() {
+  const normalize = (p) => p.replace(/\/index\.html?$/, "/").replace(/\/$/, "");
+  const here = normalize(location.pathname);
+
+  document.querySelectorAll("#nav-list a[href]").forEach((a) => {
+    const aPath = normalize(
+      new URL(a.getAttribute("href"), location.origin).pathname
+    );
+    const match =
+      aPath === here ||
+      (aPath === "" && here === "") ||
+      (aPath === "/" && here === "/");
+    a.classList.toggle("current", match);
+    if (match) a.setAttribute("aria-current", "page");
+    else a.removeAttribute("aria-current");
+  });
+}
+
+// ----- Filter state -----
+const Filter = {
+  author: "",
+  tag: "",
+  ingredient: "",
+  priceMin: "",
+  priceMax: "",
+  from: "",
+  to: "",
+};
+
+// returnează tag-urile pe care le folosești pe card
+function recipeTags(r) {
+  const tags = [];
+  if (r.category === "main") tags.push("entree");
+  if (r.category === "dessert") tags.push("dessert");
+  if (r.category === "soup") tags.push("soup");
+  if (r.vegan) tags.push("vegan");
+  if (r.glutenFree) tags.push("gluten-free");
+  if (r.rice) tags.push("rice");
+  return tags;
+}
+
+//Inițializare: umple datalist-urile și leagă evenimente
+
+function initFilters() {
+  const by = (id) => document.getElementById(id);
+  const authors = new Set();
+  const tags = new Set();
+  const ingredients = new Set();
+
+  (RECIPES || []).forEach((r) => {
+    authors.add((r.author || "FoodieR").trim());
+    recipeTags(r).forEach((t) => tags.add(t));
+    (Array.isArray(r.ingredients) ? r.ingredients : []).forEach((i) =>
+      ingredients.add(i)
+    );
+  });
+
+  by("authors").innerHTML = [...authors]
+    .sort()
+    .map((a) => `<option value="${a}">`)
+    .join("");
+  by("tags").innerHTML = [...tags]
+    .sort()
+    .map((t) => `<option value="${t}">`)
+    .join("");
+  by("ingredients").innerHTML = [...ingredients]
+    .sort()
+    .map((i) => `<option value="${i}">`)
+    .join("");
+
+  const inputs = [
+    "f-author",
+    "f-tag",
+    "f-ingredient",
+    "f-price-min",
+    "f-price-max",
+    "f-date-from",
+    "f-date-to",
+  ]
+    .map((id) => by(id))
+    .filter(Boolean);
+
+  inputs.forEach((inp) => {
+    inp.addEventListener("input", () => {
+      Filter.author = by("f-author")?.value.trim().toLowerCase() || "";
+      Filter.tag = by("f-tag")?.value.trim().toLowerCase() || "";
+      Filter.ingredient = by("f-ingredient")?.value.trim().toLowerCase() || "";
+      Filter.priceMin = by("f-price-min")?.value || "";
+      Filter.priceMax = by("f-price-max")?.value || "";
+      Filter.from = by("f-date-from")?.value || "";
+      Filter.to = by("f-date-to")?.value || "";
+      rerenderWithFilters();
+    });
+  });
+
+  by("f-clear")?.addEventListener("click", () => {
+    inputs.forEach((i) => (i.value = ""));
+    Object.keys(Filter).forEach((k) => (Filter[k] = ""));
+    rerenderWithFilters();
+  });
+}
+
+//Funcția care aplică filtrele
+function getFiltered(list) {
+  return list.filter((r) => {
+    // author
+    if (Filter.author) {
+      const a = (r.author || "FoodieR").toLowerCase();
+      if (!a.includes(Filter.author)) return false;
+    }
+    // tag
+    if (Filter.tag) {
+      const tgs = recipeTags(r).map((t) => t.toLowerCase());
+      if (!tgs.some((t) => t.includes(Filter.tag))) return false;
+    }
+    // ingredient
+    if (Filter.ingredient) {
+      const ings = (r.ingredients || []).map((i) => String(i).toLowerCase());
+      if (!ings.some((i) => i.includes(Filter.ingredient))) return false;
+    }
+    // price (doar pentru rețete cu preț)
+    const price = r.free ? 0 : Number(r.price || 0);
+    if (Filter.priceMin && price < Number(Filter.priceMin)) return false;
+    if (Filter.priceMax && price > Number(Filter.priceMax)) return false;
+
+    // date (așteaptă r.date = 'YYYY-MM-DD')
+    const d = r.date ? new Date(r.date) : null;
+    if (Filter.from && d && d < new Date(Filter.from)) return false;
+    if (Filter.to && d && d > new Date(Filter.to)) return false;
+
+    return true;
+  });
+}
+
+//Re-randare când se schimbă filtrele (nu îți stric funcțiile existente)
+function rerenderWithFilters() {
+  // păstrăm numele funcțiilor tale, dar filtrăm lista înainte
+  const paidGrid = document.getElementById("paid-grid");
+  if (paidGrid) {
+    paidGrid.innerHTML = getFiltered(RECIPES.filter((r) => !r.free))
+      .map((r) => recipeCardHTML(r, "paid"))
+      .join("");
+    bindCardActions(paidGrid);
+  }
+
+  const freeGrid = document.getElementById("free-grid");
+  if (freeGrid) {
+    freeGrid.innerHTML = getFiltered(RECIPES.filter((r) => r.free))
+      .map((r) => recipeCardHTML(r, "free"))
+      .join("");
+    bindCardActions(freeGrid);
+  }
+
+  const saleGrid = document.getElementById("sale-grid");
+  if (saleGrid) {
+    saleGrid.innerHTML = getFiltered(RECIPES.filter((r) => r.sale))
+      .map((r) => recipeCardHTML(r, "sale"))
+      .join("");
+    bindCardActions(saleGrid);
+  }
+}
+// Pornește filtrele
+function init() {
+  applyTheme();
+  applyI18n();
+  setYear();
+  initHeader();
+  initCartButtons();
+
+  initFilters(); // <— PORNEȘTE filtrele
+
+  renderAll();
+  renderProducts();
+  renderBlog();
+  renderRecipePage();
+  initSearch();
+}

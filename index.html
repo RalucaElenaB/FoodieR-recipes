@@ -113,31 +113,50 @@
         </div>
       </section>
 
-      <!-- My Recipes (Paid) -->
-      <section class="container" id="my-recipes">
-        <div class="section-head">
-          <h2 data-i18n="sections.myRecipes">My Recipes</h2>
-          
-        </div>
-        <div class="carousel" data-carousel="paid">
-          <button class="carousel-prev" aria-label="Prev">‹</button>
-          <div class="carousel-track" id="paid-track"></div>
-          <button class="carousel-next" aria-label="Next">›</button>
-        </div>
-      </section>
+      <!-- Filters -->
+<section class="container">
+  <div class="filters-card" id="filters">
+    <h3>Filter Results</h3>
+    <div class="filters-row">
+      <input id="f-author" list="authors" placeholder="Search author…">
+      <datalist id="authors"></datalist>
+
+      <input id="f-tag" list="tags" placeholder="Search tag…">
+      <datalist id="tags"></datalist>
+
+      <input id="f-ingredient" list="ingredients" placeholder="Search ingredient…">
+      <datalist id="ingredients"></datalist>
+
+      
+
+      
+
+      <button id="f-clear" class="btn-danger">Clear Filters</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- My Recipes (Paid) -->
+<section class="container" id="my-recipes">
+  <div class="section-head about-copy">
+    <h2 data-i18n="sections.myRecipes">New recipes</h2>
+  </div>
+  <div class="cards-grid recipe-grid" id="paid-grid"></div>
+</section>
+
 
       <!-- Free Recipes -->
       <section class="container" id="free-recipes">
-        <div class="section-head">
+        <div class="section-head about-copy">
           <h2 data-i18n="sections.freeRecipes">Free Recipes</h2>
-        
         </div>
         <div class="cards-grid" id="free-grid"></div>
       </section>
 
       <!-- Special Sale (BOGO) -->
       <section class="container" id="special-sale">
-        <div class="section-head">
+        <div class="section-head about-copy">
           <h2 data-i18n="sections.specialSale">Special Sale</h2>
           <span class="badge" data-i18n="sections.bogo"
             >Cumperi 1, alegi 1 gratis</span
@@ -146,6 +165,7 @@
         <div class="cards-grid" id="sale-grid"></div>
       </section>
     </main>
+
 
     <footer class="site-footer">
       <div class="container footer-columns">

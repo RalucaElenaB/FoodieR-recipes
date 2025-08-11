@@ -36,55 +36,26 @@ const CATEGORIES = [
 // Minimal recipe records
 const RECIPES = [
   {
-    id: "r1",
-    title: "Lasagna ușoară cu dovlecel",
-    lang: { ro: "Lasagna ușoară cu dovlecel", en: "Light Zucchini Lasagna" },
-    category: "main",
-    price: 19,
-    sale: true,
-    free: false,
-    vegan: false,
-    kcal: 380,
-    carbs: 32,
-    protein: 28,
-    fat: 12,
-    img: "assets/placeholders/recipe-1.jpg",
-    teaser: "Toată savoarea, cu mai puține foi și brânză light.",
-    ingredients: [
-      "200g dovlecel feliat",
-      "200g carne curcan",
-      "100g brânză light",
-      "sos roșii",
-    ],
-    steps: [
-      "Sotează carnea cu condimente.",
-      "Așază straturi alternative cu dovlecel și sos.",
-      "Coace 25 min la 190°C.",
-    ],
+    // adaugă în array-ul RECIPES:
+
+    id: "turbo-veggie-soup", // unic!
+    title: "Turbo Veggie Soup", // fallback dacă lipsește lang[...]
+    lang: { ro: "Supă Turbo de Legume", en: "Turbo Veggie Soup" },
+    teaser: "Ușoară și plină de nutrienți.",
+    img: "assets/photos/turbo-veggie-soup.jpg", // cale corectă!
+    free: true, // ← important pentru Free Recipes
+    category: "soup", // "main" | "dessert" | "soup" etc.
+    vegan: true, // pentru tag-uri
+    author: "FoodieR", // opțional (default: FoodieR)
+    // câmpuri pentru pagina de rețetă (se afișează după click):
+    kcal: 160,
+    carbs: 22,
+    protein: 6,
+    fat: 3,
+    ingredients: ["1 ceapă", "2 morcovi", "1 dovlecel", "apă, sare, piper"],
+    steps: ["Călește ceapa", "Adaugă legumele", "Fierbe 20 min", "Blendează."],
   },
-  {
-    id: "r2",
-    title: "Cheesecake fără coacere",
-    lang: { ro: "Cheesecake fără coacere", en: "No‑bake Cheesecake" },
-    category: "dessert",
-    price: 15,
-    sale: true,
-    free: false,
-    vegan: false,
-    kcal: 240,
-    carbs: 28,
-    protein: 12,
-    fat: 8,
-    img: "assets/placeholders/recipe-2.jpg",
-    teaser: "Cremă catifelată, îndulcită responsabil.",
-    ingredients: [
-      "200g iaurt grecesc 2%",
-      "200g brânză light",
-      "îndulcitor",
-      "fulgi de ovăz",
-    ],
-    steps: ["Amestecă baza.", "Întinde crema.", "Răcește 2 ore."],
-  },
+
   {
     id: "r3",
     title: "Ciorbă de legume turbo",
@@ -121,6 +92,7 @@ const RECIPES = [
     ingredients: ["fasole neagră fiartă", "cacao", "ovăz", "banană"],
     steps: ["Blenduiește.", "Toarnă în tavă.", "Coace 18 min."],
   },
+
   {
     id: "r5",
     title: "Pizza proteinată la tigaie",
@@ -148,6 +120,124 @@ const RECIPES = [
       "Prăjește ușor.",
       "Adaugă topping și acoperă 5 min.",
     ],
+  },
+  {
+    id: "lemon-cheesecake-light",
+    title: "Lemon Cheesecake Light",
+    lang: {
+      ro: "Cheesecake cu lămâie (light)",
+      en: "Lemon Cheesecake (light)",
+    },
+    teaser: "Desert fresh, cu mai puțin zahăr.",
+    img: "assets/photos/lemon-cheesecake.jpg",
+    free: true,
+    category: "dessert",
+    vegan: false,
+    author: "FoodieR",
+    kcal: 210,
+    carbs: 24,
+    protein: 10,
+    fat: 8,
+    ingredients: [
+      "250 g brânză slabă",
+      "iaurt grecesc light",
+      "gelatină",
+      "lămâie",
+    ],
+    steps: ["Amestecă baza", "Gelatina încorporează", "Toarnă și răcește 3h"],
+  },
+  {
+    id: "veggie-wrap-rapid",
+    title: "Veggie Wrap Rapid",
+    lang: { ro: "Wrap de legume rapid", en: "Quick Veggie Wrap" },
+    teaser: "Prânz la pachet în 10 minute.",
+    img: "assets/photos/veggie-wrap.jpg",
+    free: true,
+    category: "main",
+    vegan: true,
+    author: "FoodieR",
+    kcal: 320,
+    carbs: 44,
+    protein: 11,
+    fat: 10,
+    ingredients: ["lipie integrală", "hummus", "salată", "ardei", "roșii"],
+    steps: ["Unge lipia cu hummus", "Adaugă legumele", "Rulează și servește"],
+  },
+  //sale recipes
+  // în array-ul RECIPES
+  {
+    id: "no-bake-cheesecake",
+    title: "No-bake Cheesecake",
+    lang: { ro: "Cheesecake fără coacere", en: "No-bake Cheesecake" },
+    teaser: "Cremă catifelată, îndulcită responsabil.",
+    img: "assets/photos/no-bake-cheesecake.jpg", // ← asigură-te că există!
+    category: "dessert",
+    vegan: false,
+    free: false,
+    sale: true, // ← face să apară în Special Sale + BOGO
+    price: 15, // prețul redus
+    oldPrice: 29, // (opțional) preț vechi pt. tăiat
+    author: "FoodieR",
+    kcal: 260,
+    carbs: 21,
+    protein: 12,
+    fat: 9,
+    ingredients: ["..."],
+    steps: ["..."],
+  },
+  {
+    id: "green-pasta-sale",
+    title: "Green Pasta",
+    lang: { ro: "Paste verzi", en: "Green Pasta" },
+    teaser: "Rapid, fresh, sățios.",
+    img: "assets/photos/green-pasta.jpg",
+    category: "main",
+    vegan: true,
+    free: false,
+    sale: true,
+    price: 12,
+    oldPrice: 24,
+  },
+  // în array-ul RECIPES
+  {
+    id: "no-bake-cheesecake",
+    title: "No-bake Cheesecake",
+    lang: { ro: "Cheesecake fără coacere", en: "No-bake Cheesecake" },
+    teaser: "Cremă catifelată, îndulcită responsabil.",
+    img: "assets/photos/no-bake-cheesecake.jpg", // ← asigură-te că există!
+    category: "dessert",
+    vegan: false,
+    free: false,
+    sale: true, // ← face să apară în Special Sale + BOGO
+    price: 15, // prețul redus
+    oldPrice: 29, // (opțional) preț vechi pt. tăiat
+    author: "FoodieR",
+    kcal: 260,
+    carbs: 21,
+    protein: 12,
+    fat: 9,
+    ingredients: ["..."],
+    steps: ["..."],
+  },
+  {
+    id: "no-bake-cheesecake",
+    title: "No-bake Cheesecake",
+    lang: { ro: "Cheesecake fără coacere", en: "No-bake Cheesecake" },
+    teaser: "Cremă catifelată, îndulcită responsabil.",
+    img: "assets/photos/no-bake-cheesecake.jpg", // ← asigură-te că există!
+    category: "dessert",
+    vegan: false,
+    free: false,
+    sale: true, // ← face să apară în Special Sale + BOGO
+    price: 15, // prețul redus
+    oldPrice: 29, // (opțional) preț vechi pt. tăiat
+    author: "FoodieR",
+    kcal: 260,
+    carbs: 21,
+    protein: 12,
+    fat: 9,
+    ingredients: ["..."],
+    steps: ["..."],
   },
 ];
 
