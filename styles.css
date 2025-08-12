@@ -289,7 +289,7 @@ button {
   z-index: 2;
 }
 
-.carousel-prev {
+.carousel-prev .carousel-next {
   left: 0.5rem;
 }
 
@@ -979,3 +979,55 @@ button {
 .tabs {
   margin-top: 30px;
 }
+
+/* features */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 280fr));
+  justify-content: center; /* centrează “șinele” gridului */
+  gap: 1rem;
+  text-align: center; /* opțional: centrează textele din .feat */
+  margin-top: 4px;
+}
+
+.feat h3 {
+  margin: 0.1rem 0 0.25rem;
+  align-content: center;
+  color: #fb6d3a;
+}
+.glass {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1rem 1.2rem;
+  backdrop-filter: blur(6px);
+  align-items: center;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.contact {
+  margin: 1rem auto;
+  text-align: center;
+}
+
+/* Header rămas sus la scroll */
+:root {
+  --header-h: 72px;
+} /* ajustează la înălțimea headerului */
+
+#site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-h);
+  width: 100%;
+  z-index: 900;
+  background: rgb(167, 218, 200);
+  display: flex; /* dacă ai nevoie să păstrezi alinierea internă */
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+
+body {
+  padding-top: var(--header-h);
+} /* împinge conținutul sub header */
