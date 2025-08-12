@@ -42,7 +42,7 @@ const RECIPES = [
     title: "Turbo Veggie Soup", // fallback dacă lipsește lang[...]
     lang: { ro: "Supă Turbo de Legume", en: "Turbo Veggie Soup" },
     teaser: "Ușoară și plină de nutrienți.",
-    img: "assets/photos/turbo-veggie-soup.jpg", // cale corectă!
+    img: "assets/photos/FelPrincipal.jpg", // cale corectă!
     free: true, // ← important pentru Free Recipes
     category: "soup", // "main" | "dessert" | "soup" etc.
     vegan: true, // pentru tag-uri
@@ -69,7 +69,7 @@ const RECIPES = [
     carbs: 18,
     protein: 4,
     fat: 3,
-    img: "assets/placeholders/recipe-3.jpg",
+    img: "assets/photos/AlbaCaZapada.png",
     teaser: "Ușoară și plină de nutrienți.",
     ingredients: ["morcov", "țelină", "ardei", "dovlecel", "roșii"],
     steps: ["Taie legumele.", "Fierbe 20 min.", "Potrivește de sare."],
@@ -87,7 +87,7 @@ const RECIPES = [
     carbs: 25,
     protein: 8,
     fat: 7,
-    img: "assets/placeholders/recipe-4.jpg",
+    img: "assets/photos/Colaboration.png",
     teaser: "Ciocolatos și surprinzător de lejer.",
     ingredients: ["fasole neagră fiartă", "cacao", "ovăz", "banană"],
     steps: ["Blenduiește.", "Toarnă în tavă.", "Coace 18 min."],
@@ -129,7 +129,7 @@ const RECIPES = [
       en: "Lemon Cheesecake (light)",
     },
     teaser: "Desert fresh, cu mai puțin zahăr.",
-    img: "assets/photos/lemon-cheesecake.jpg",
+    img: "assets/photos/Colaboration.png",
     free: true,
     category: "dessert",
     vegan: false,
@@ -151,7 +151,7 @@ const RECIPES = [
     title: "Veggie Wrap Rapid",
     lang: { ro: "Wrap de legume rapid", en: "Quick Veggie Wrap" },
     teaser: "Prânz la pachet în 10 minute.",
-    img: "assets/photos/veggie-wrap.jpg",
+    img: "assets/photos/FelPrincipal.jpg",
     free: true,
     category: "main",
     vegan: true,
@@ -170,7 +170,7 @@ const RECIPES = [
     title: "No-bake Cheesecake",
     lang: { ro: "Cheesecake fără coacere", en: "No-bake Cheesecake" },
     teaser: "Cremă catifelată, îndulcită responsabil.",
-    img: "assets/photos/no-bake-cheesecake.jpg", // ← asigură-te că există!
+    img: "assets/photos/FelPrincipal.jpg", // ← asigură-te că există!
     category: "dessert",
     vegan: false,
     free: false,
@@ -190,7 +190,7 @@ const RECIPES = [
     title: "Green Pasta",
     lang: { ro: "Paste verzi", en: "Green Pasta" },
     teaser: "Rapid, fresh, sățios.",
-    img: "assets/photos/green-pasta.jpg",
+    img: "assets/photos/FelPrincipal.jpg",
     category: "main",
     vegan: true,
     free: false,
@@ -204,7 +204,7 @@ const RECIPES = [
     title: "No-bake Cheesecake",
     lang: { ro: "Cheesecake fără coacere", en: "No-bake Cheesecake" },
     teaser: "Cremă catifelată, îndulcită responsabil.",
-    img: "assets/photos/no-bake-cheesecake.jpg", // ← asigură-te că există!
+    img: "assets/photos/FelPrincipal.jpg", // ← asigură-te că există!
     category: "dessert",
     vegan: false,
     free: false,
@@ -224,7 +224,7 @@ const RECIPES = [
     title: "No-bake Cheesecake",
     lang: { ro: "Cheesecake fără coacere", en: "No-bake Cheesecake" },
     teaser: "Cremă catifelată, îndulcită responsabil.",
-    img: "assets/photos/no-bake-cheesecake.jpg", // ← asigură-te că există!
+    img: "assets/photos/FelPrincipal.jpg", // ← asigură-te că există!
     category: "dessert",
     vegan: false,
     free: false,

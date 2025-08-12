@@ -1148,3 +1148,18 @@ function init() {
   renderRecipePage();
   initSearch();
 }
+
+function adjustForFixedHeader() {
+  const h = document.getElementById("site-header");
+  if (!h) return;
+  if (window.matchMedia("(min-width: 992px)").matches) {
+    document.documentElement.style.setProperty(
+      "--header-h",
+      h.offsetHeight + "px"
+    );
+  } else {
+    document.documentElement.style.removeProperty("--header-h");
+  }
+}
+window.addEventListener("load", adjustForFixedHeader);
+window.addEventListener("resize", adjustForFixedHeader);

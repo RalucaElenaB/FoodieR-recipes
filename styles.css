@@ -20,6 +20,7 @@
 * {
   box-sizing: border-box;
 }
+
 html,
 body {
   height: 100%;
@@ -206,7 +207,7 @@ button {
 
 /* Hero */
 .hero {
-  margin-top: 22rem;
+  margin-top: 0;
 }
 .carousel {
   position: relative;
@@ -1006,42 +1007,6 @@ button {
   text-align: center;
 }
 
-/*header fix doar pe descktop*/
-:root {
-  --header-h: 72px;
-} /* înălțimea reală a headerului */
-
-/* Comportament implicit (mobil/tabletă): header normal */
-#site-header {
-  position: static; /* sau sticky dacă vrei: position: sticky; top: 0; */
-}
-
-/* Doar pe desktop îl facem fixed */
-@media (min-width: 992px) {
-  #site-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: var(--header-h);
-    width: 100%;
-    z-index: 900;
-    background: rgb(167, 218, 200);
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid var(--border);
-  }
-  /* împinge conținutul sub header doar pe desktop */
-  body {
-    padding-top: var(--header-h);
-  }
-}
-
-/* (opțional) dacă ai un container în header, nu-l lăsa să sară */
-#site-header .container {
-  width: min(1100px, 92%);
-  margin: 0 auto;
-}
 /*linii sub meniu*/
 /* linkuri meniu: linie animată la hover */
 #nav-list a {
@@ -1077,3 +1042,115 @@ button {
 #nav-list a.active::after {
   transform: scaleX(1);
 }
+
+/* Header fix DOAR pe desktop */
+:root {
+  --header-h: 72px;
+}
+
+@media (min-width: 992px) {
+  #site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-h);
+    z-index: 900;
+    background: rgb(167, 218, 200);
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  body {
+    padding-top: var(--header-h);
+  } /* doar pe desktop! */
+}
+
+/* Pe mobil: nu împinge conținutul */
+@media (max-width: 991.98px) {
+  body {
+    padding-top: 0 !important;
+  }
+  #site-header {
+    position: sticky;
+    top: 0;
+    z-index: 900;
+  } /* sau static, cum vrei */
+  .hero {
+    margin-top: 0.5rem;
+  } /* micșorează spațiul de început */
+}
+
+/* Meniul mobil să nu lase spațiu când e închis */
+#nav-list {
+  margin: 0;
+  padding: 0;
+}
+@media (max-width: 991.98px) {
+  #nav-list {
+    display: none;
+  }
+  #nav-list.show {
+    display: block;
+  } /* doar când apeși burger */
+}
+
+/* Header fix DOAR pe desktop */
+/* bară full-width; conținutul e centrat în .header-inner */
+#site-header {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  z-index: 900;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+/* DOAR desktop: fixed + padding egal cu înălțimea reală a headerului */
+@media (min-width: 992px) {
+  #site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  body {
+    padding-top: var(--header-h, 0px);
+  }
+}
+
+/* Mobil/tabletă: sticky, fără padding suplimentar */
+@media (max-width: 991.98px) {
+  #site-header {
+    position: sticky;
+    top: 0;
+  }
+  body {
+    padding-top: 0 !important;
+  }
+}
+
+/* Meniul mobil să nu lase spațiu când e închis */
+#nav-list {
+  margin: 0;
+  padding: 0;
+}
+@media (max-width: 991.98px) {
+  #nav-list {
+    display: none;
+  }
+  #nav-list.show {
+    display: block;
+  }
+}
+
+/* HERO – elimină distanța uriașă */
+.hero {
+  margin-top: 1rem;
+} /* mic, estetic */
+.carousel {
+  margin-top: 0;
+} /* scoate 22rem! */
