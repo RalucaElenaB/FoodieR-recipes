@@ -54,6 +54,7 @@ button {
 .muted {
   color: var(--muted);
   font-size: 0.9rem;
+  text-align: center;
 }
 
 .badge {
@@ -401,6 +402,10 @@ button {
   .hero .copy h3 {
     text-align: left;
     font-size: 1.4rem;
+    text-align: center;
+  }
+  .muted {
+    text-align: center;
   }
 }
 
@@ -968,4 +973,9 @@ button {
   display: flex;
   align-items: center;
   gap: 0.4rem;
+}
+
+/*Recipes page*/
+.tabs {
+  margin-top: 30px;
 }
