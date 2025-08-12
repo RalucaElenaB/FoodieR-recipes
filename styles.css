@@ -1162,3 +1162,46 @@ button {
     margin-top: 0 !important;
   }
 }
+
+/*Centrează footerul cardurilor doar în gridul de free (#free-grid):*/
+/* Asigură-te că fiecare card umple celula din grid */
+.cards-grid {
+  align-items: stretch;
+} /* default e stretch, îl păstrăm */
+.recipe-card {
+  height: 100%; /* cardul = înălțimea celulei */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Conținutul flexibil în corp; footer-ul împins jos */
+.recipe-card .body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+.recipe-card .footer {
+  margin-top: auto; /* împinge footer-ul la bază în toate cardurile */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* În FREE grid vrem butonul la mijloc */
+#free-grid .recipe-card .footer {
+  justify-content: center; /* buton centrat în cardurile gratuite */
+}
+
+/* (opțional) dacă ai hadere/texte cu înălțimi diferite, păstrează spațieri mici */
+.recipe-card .title {
+  margin-bottom: 0.35rem;
+}
+.recipe-card .excerpt {
+  margin-bottom: 0.6rem;
+}
+
+.add-to-cart {
+  /* opțional, ca să iasă în evidență */
+  border-color: var(--accent);
+  color: var(--accent);
+}

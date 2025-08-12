@@ -642,14 +642,16 @@ function renderRecipePage() {
   const wrap = document.getElementById("recipe-article");
   if (!wrap) return;
 
+  // Verifică lista de rețete
   if (!Array.isArray(RECIPES) || RECIPES.length === 0) {
     wrap.innerHTML = `<p class="muted">Nu găsesc lista de rețete. Verifică <code>data.js</code>.</p>`;
     return;
   }
-
+  // ID din URL (string!)
+  const id = new URLSearchParams(location.search).get("id") || "";
   const params = new URLSearchParams(location.search);
-  const id = params.get("id");
 
+  // Fără ID → oferă sugestii
   if (!id) {
     // fără id: oferă linkuri de test
     wrap.innerHTML = `
@@ -671,6 +673,7 @@ function renderRecipePage() {
     return;
   }
 
+  // Caută rețeta după ID (convertit la string)
   const r = RECIPES.find((x) => x.id === id);
   if (!r) {
     wrap.innerHTML = `
@@ -694,6 +697,23 @@ function renderRecipePage() {
 
   const owned = r.free || State.owned.includes(r.id);
   document.title = (r.lang?.[State.lang] || r.title) + " • FoodieR";
+
+  // Tabel nutrițional (suportă r.nutrition sau fallback pe carbs/protein/fat)
+  const hasClassicMacros =
+    r.carbs != null || r.protein != null || r.fat != null;
+  const nutriTable = r.nutrition
+    ? `<h3>Valori nutriționale (per porție)</h3>
+         <table class="nutri-table"><tbody>
+           ${Object.entries(r.nutrition)
+             .map(([k, v]) => `<tr><th>${k}</th><td>${v}</td></tr>`)
+             .join("")}
+         </tbody></table>`
+    : hasClassicMacros
+    ? `<h3>Repartiție calorică</h3>
+         <p>Carbo: ${r.carbs ?? "-"}g • Proteină: ${
+        r.protein ?? "-"
+      }g • Grăsime: ${r.fat ?? "-"}g</p>`
+    : "";
 
   wrap.innerHTML = `
     <div class="hero">
@@ -743,6 +763,7 @@ function renderRecipePage() {
     </section>
   `;
 
+  // Deblocare la cumpărare
   if (!r.free) {
     document.getElementById("buyBtn")?.addEventListener("click", () => {
       const alreadyOwned = State.owned.includes(r.id);
@@ -889,44 +910,39 @@ function recipeCardHTML(r, section) {
          <span class="price-badge">${money(r.price)}</span>`
     : `<span class="price-badge">${money(r.price)}</span>`;
 
-  // butonul principal
+  // ⇩⇩⇩ schimbă CTA pentru FREE
   const cta = r.free
-    ? `<button class="pill" onclick="location.href='recipe.html?id=${r.id}'">Vizualizează</button>`
+    ? `<a class="pill" href="recipe.html?id=${r.id}">Vizualizează</a>`
     : `<button class="accent" data-buy="${r.id}">${
         owned ? "Vizualizează" : "Cumpără"
       }</button>`;
 
-  // butonul secundar — doar în SALE e „Cumpără”, în rest „Detalii”, iar în FREE nu e niciunul
-  let secondBtn = "";
-  if (section === "sale") {
-    secondBtn = `<button class="ghost" onclick="addToCart('${r.id}')">Cumpără</button>`;
-  } else if (!r.free) {
-    secondBtn = `<button class="ghost" onclick="location.href='recipe.html?id=${r.id}'">Detalii</button>`;
-  }
-
   return `
-  <article class="recipe-card" data-id="${r.id}">
-    <div class="thumb"><img src="${r.img}" alt="${title}" loading="lazy"></div>
-    <div class="body">
-      <h3 class="title">${title}</h3>
-      <p class="excerpt">"${r.teaser || ""}"</p>
-      <div class="tags">
-        ${saleTag}
-        ${recipeTags(r)
-          .map((t) => `<span class="tag">${t}</span>`)
-          .join("")}
-        ${r.vegetarian && !r.vegan ? '<span class="tag">vegetarian</span>' : ""}
+    <article class="recipe-card ${r.free ? "is-free" : ""}" data-id="${r.id}">
+      <div class="thumb"><img src="${
+        r.img
+      }" alt="${title}" loading="lazy"></div>
+      <div class="body">
+        <h3 class="title">${title}</h3>
+        <p class="excerpt">"${r.teaser || ""}"</p>
+        <div class="tags">
+          ${saleTag}
+          ${recipeTags(r)
+            .map((t) => `<span class="tag">${t}</span>`)
+            .join("")}
+          ${
+            r.vegetarian && !r.vegan
+              ? '<span class="tag">vegetarian</span>'
+              : ""
+          }
+        </div>
+        <div class="meta">Autor: ${r.author || "FoodieR"}</div>
       </div>
-      <div class="meta">Autor: ${r.author || "FoodieR"}</div>
-    </div>
-    <div class="footer">
-      ${price}
-      <div class="card-actions">
-        ${cta}
-        ${secondBtn}
+      <div class="footer">
+        ${price}
+        <div class="card-actions">${cta}</div>
       </div>
-    </div>
-  </article>`;
+    </article>`;
 }
 
 function bindCardActions(wrapper) {
@@ -1163,3 +1179,229 @@ function adjustForFixedHeader() {
 }
 window.addEventListener("load", adjustForFixedHeader);
 window.addEventListener("resize", adjustForFixedHeader);
+
+function labelMacro(k) {
+  const map = {
+    kcal: "Calorii",
+    protein: "Proteină (g)",
+    carbs: "Carbohidrați (g)",
+    fat: "Grăsimi (g)",
+    fiber: "Fibre (g)",
+    sugar: "Zaharuri (g)",
+  };
+  return map[k] || k;
+}
+
+function renderRecipePage() {
+  const wrap = $("#recipe-article");
+  if (!wrap) return;
+
+  const id = new URLSearchParams(location.search).get("id");
+  const r = RECIPES.find((x) => x.id === id) || RECIPES[0];
+  const owned = r.free || State.owned.includes(r.id);
+
+  document.title = (r.lang?.[State.lang] || r.title) + " • FoodieR";
+
+  const mainMedia =
+    (r.gallery && r.gallery[0]) || r.img || "assets/photos/placeholder.jpg";
+
+  wrap.innerHTML = `
+    <header class="recipe-hero">
+      <div class="media" id="mediaBox">
+        ${
+          r.video
+            ? `<iframe class="video" src="${r.video}" title="Video" frameborder="0" allowfullscreen></iframe>`
+            : `<img id="media-main" src="${mainMedia}" alt="${r.title}">`
+        }
+        <div class="thumbs" id="thumbs">
+          ${
+            r.gallery
+              ? r.gallery
+                  .map(
+                    (src) => `
+            <button class="t" data-type="img" data-src="${src}">
+              <img src="${src}" alt="">
+            </button>`
+                  )
+                  .join("")
+              : ""
+          }
+          ${
+            r.video
+              ? `<button class="t" data-type="video" data-src="${r.video}">▶</button>`
+              : ""
+          }
+        </div>
+      </div>
+
+      <div class="meta">
+        <h1>${r.lang?.[State.lang] || r.title}</h1>
+        <p class="muted">${r.teaser || ""}</p>
+
+        <div class="badges">
+          ${
+            r.free
+              ? '<span class="badge">FREE</span>'
+              : `<span class="badge">${money(r.price)}</span>`
+          }
+          ${r.vegan ? '<span class="badge">VEGAN</span>' : ""}
+          ${
+            r.nutrition?.kcal
+              ? `<span class="badge">${r.nutrition.kcal} kcal</span>`
+              : ""
+          }
+        </div>
+
+        ${
+          r.free
+            ? ""
+            : `
+        <div class="actions">
+          <button class="accent" id="buyBtn">${
+            owned ? "Deschide" : "Cumpără acum"
+          }</button>
+        </div>`
+        }
+
+        <div class="fact-grid">
+          ${r.time ? `<div><strong>⏱</strong><span>${r.time}</span></div>` : ""}
+          ${
+            r.servings
+              ? `<div><strong>🍽</strong><span>${r.servings} porții</span></div>`
+              : ""
+          }
+          ${
+            r.difficulty
+              ? `<div><strong>⚙️</strong><span>${r.difficulty}</span></div>`
+              : ""
+          }
+        </div>
+      </div>
+    </header>
+
+    <section id="recipe-content" class="${owned ? "" : "locked"}">
+      <div class="two-col">
+        <div>
+          <h3>Ingrediente</h3>
+          <ul class="ing-list">
+            ${r.ingredients
+              .map(
+                (i) => `<li><label><input type="checkbox"> ${i}</label></li>`
+              )
+              .join("")}
+          </ul>
+          <button class="pill" id="copyIng">Copiază lista</button>
+        </div>
+
+        <div>
+          <h3>Mod de preparare</h3>
+          <ol class="steps">${r.steps.map((s) => `<li>${s}</li>`).join("")}</ol>
+        </div>
+      </div>
+
+      ${
+        r.nutrition
+          ? `
+      <h3>Valori nutriționale (per porție)</h3>
+      <table class="nutri-table">
+        <tbody>
+          ${Object.entries(r.nutrition)
+            .map(([k, v]) => `<tr><th>${labelMacro(k)}</th><td>${v}</td></tr>`)
+            .join("")}
+        </tbody>
+      </table>`
+          : ""
+      }
+    </section>
+  `;
+
+  // thumbs: schimbă media
+  $("#thumbs")
+    ?.querySelectorAll(".t")
+    .forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const type = btn.dataset.type;
+        const src = btn.dataset.src;
+        const box = $("#mediaBox");
+        if (type === "video") {
+          box.querySelector(".video")?.remove();
+          box.querySelector("#media-main")?.remove();
+          box.insertAdjacentHTML(
+            "afterbegin",
+            `<iframe class="video" src="${src}" title="Video" frameborder="0" allowfullscreen></iframe>`
+          );
+        } else {
+          const img = box.querySelector("#media-main");
+          if (img) img.src = src;
+          else {
+            box.querySelector(".video")?.remove();
+            box.insertAdjacentHTML(
+              "afterbegin",
+              `<img id="media-main" src="${src}" alt="${r.title}">`
+            );
+          }
+        }
+      });
+    });
+
+  // buton cumpărare / deblocare
+  if (!r.free) {
+    $("#buyBtn")?.addEventListener("click", () => {
+      if (owned) {
+        $("#recipe-content").classList.remove("locked");
+      } else {
+        addToCart(r.id);
+      }
+    });
+  }
+
+  // copiere ingrediente
+  $("#copyIng")?.addEventListener("click", () => {
+    const text = r.ingredients.join("\n");
+    navigator.clipboard?.writeText(text);
+    alert("Lista de ingrediente a fost copiată.");
+  });
+
+  /* === Reviews rămân ca înainte === */
+  const list = $("#reviews-list");
+  const form = $("#review-form");
+  function loadReviews() {
+    return JSON.parse(localStorage.getItem("reviews:" + r.id) || "[]");
+  }
+  function saveReviews(v) {
+    localStorage.setItem("reviews:" + r.id, JSON.stringify(v));
+  }
+  function renderReviews() {
+    const revs = loadReviews();
+    list.innerHTML = revs.length
+      ? ""
+      : '<p class="muted">Fii primul care lasă o recenzie.</p>';
+    revs.forEach((rv) => {
+      const el = document.createElement("div");
+      el.className = "card";
+      el.innerHTML = `<div class="pad"><strong>${"★".repeat(
+        rv.stars
+      )}${"☆".repeat(5 - rv.stars)}</strong>
+        <p>${rv.text}</p><div class="muted">de ${rv.user} • ${new Date(
+        rv.ts
+      ).toLocaleString()}</div></div>`;
+      list.appendChild(el);
+    });
+  }
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!State.user) {
+      alert("Autentifică-te pentru a lăsa o recenzie.");
+      return;
+    }
+    const stars = parseInt($("#review-stars").value, 10);
+    const text = $("#review-text").value.trim();
+    if (!text) return;
+    const revs = loadReviews();
+    revs.unshift({ stars, text, user: State.user.email, ts: Date.now() });
+    saveReviews(revs);
+    $("#review-text").value = "";
+    renderReviews();
+  });
+  renderReviews();
+}

@@ -125,8 +125,8 @@ const RECIPES = [
     id: "lemon-cheesecake-light",
     title: "Lemon Cheesecake Light",
     lang: {
-      ro: "Cheesecake cu lămâie (light)",
-      en: "Lemon Cheesecake (light)",
+      ro: "Cheesecake cu lămâie",
+      en: "Lemon Cheesecake",
     },
     teaser: "Desert fresh, cu mai puțin zahăr.",
     img: "assets/photos/Colaboration.png",
