@@ -71,6 +71,7 @@ button {
   padding: 0.4rem 0.75rem;
   border-radius: 999px;
 }
+
 .cart-pill {
   display: flex;
   align-items: center;
@@ -82,11 +83,13 @@ button {
   border-radius: 14px;
   cursor: pointer;
 }
+
 .cart-pill .icon {
   width: 18px;
   height: 18px;
   fill: #fff;
 }
+
 .cart-pill .count-badge {
   min-width: 1.2rem;
   height: 1.1rem;
@@ -221,27 +224,53 @@ button {
   scroll-behavior: smooth;
 }
 
+/* --- HERO: copy card mai pro --- */
 .carousel-slide {
-  position: relative;
-  padding: 1rem;
+  padding: 1.2rem 1.4rem;
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 1rem;
+  grid-template-columns: minmax(320px, 1.1fr) 1fr;
+  gap: 1.2rem;
   align-items: center;
-  scroll-snap-align: start;
+}
+/* panoul de text */
+.carousel-slide .copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* centrează vertical textul */
+  gap: 0.1rem;
+  min-height: 330px; /* cât imaginea */
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(6px);
+  box-shadow: 20 18px 12px rgba(0, 0, 0, 0.06);
+}
+[data-theme="dark"] .carousel-slide .copy {
+  background: rgba(0, 0, 0, 0.25);
 }
 
+/* imaginea puțin mai mare + colțuri moi */
 .carousel-slide img {
   width: 100%;
-  height: 320px; /* ajustează pe gust */
+  height: 340px;
   object-fit: cover;
-  border-radius: 0.8rem;
+  border-radius: 1rem;
 }
 
 .carousel-slide .copy h3 {
   margin: 0 0 0.5rem;
   color: var(--fg);
   text-align: center;
+  font-size: 1.6rem;
+  line-height: 1.2;
+  color: var(--fg);
+}
+.hero .copy .accent {
+  align-self: center; /* butonul rămâne la stânga */
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  box-shadow: 0 8px 18px rgba(251, 109, 58, 0.25);
 }
 
 .carousel-prev,
@@ -354,6 +383,25 @@ button {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+}
+
+/* responsive: pe mobil, imaginea deasupra, textul sub ea */
+@media (max-width: 820px) {
+  .carousel-slide {
+    grid-template-columns: 1fr;
+  }
+  .carousel-prev,
+  .carousel-next {
+    display: none;
+  }
+  .carousel-slide .copy {
+    min-height: auto;
+    padding: 0.9rem 1rem;
+  }
+  .hero .copy h3 {
+    text-align: left;
+    font-size: 1.4rem;
+  }
 }
 
 /* About slice */
