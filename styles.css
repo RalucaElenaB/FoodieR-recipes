@@ -206,7 +206,7 @@ button {
 
 /* Hero */
 .hero {
-  margin-top: 2rem;
+  margin-top: 22rem;
 }
 .carousel {
   position: relative;
@@ -214,6 +214,7 @@ button {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 1.2rem;
+  margin-top: 22rem;
 }
 
 .carousel-track {
@@ -488,10 +489,6 @@ button {
   border-top: 1px dashed var(--border);
   padding: 2rem 0;
   background: rgba(0, 0, 0, 0.02);
-}
-
-/* --- Footer --- */
-.site-footer {
   color: #e8f1ed;
   padding-top: 2.2rem;
 }
@@ -1009,25 +1006,74 @@ button {
   text-align: center;
 }
 
-/* Header rămas sus la scroll */
+/*header fix doar pe descktop*/
 :root {
   --header-h: 72px;
-} /* ajustează la înălțimea headerului */
+} /* înălțimea reală a headerului */
 
+/* Comportament implicit (mobil/tabletă): header normal */
 #site-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: var(--header-h);
-  width: 100%;
-  z-index: 900;
-  background: rgb(167, 218, 200);
-  display: flex; /* dacă ai nevoie să păstrezi alinierea internă */
-  align-items: center;
-  border-bottom: 1px solid var(--border);
+  position: static; /* sau sticky dacă vrei: position: sticky; top: 0; */
 }
 
-body {
-  padding-top: var(--header-h);
-} /* împinge conținutul sub header */
+/* Doar pe desktop îl facem fixed */
+@media (min-width: 992px) {
+  #site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-h);
+    width: 100%;
+    z-index: 900;
+    background: rgb(167, 218, 200);
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  /* împinge conținutul sub header doar pe desktop */
+  body {
+    padding-top: var(--header-h);
+  }
+}
+
+/* (opțional) dacă ai un container în header, nu-l lăsa să sară */
+#site-header .container {
+  width: min(1100px, 92%);
+  margin: 0 auto;
+}
+/*linii sub meniu*/
+/* linkuri meniu: linie animată la hover */
+#nav-list a {
+  position: relative;
+  display: inline-block;
+  padding: 0.4rem 0.2rem;
+  text-decoration: none;
+  color: var(--fg);
+}
+
+/* linia de sub link */
+#nav-list a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px; /* distanța față de text */
+  height: 3px;
+  border-radius: 999px;
+  background: #fb6d3a; /* accentul tău; poți pune și gradient */
+  transform: scaleX(0); /* ascuns inițial */
+  transform-origin: left center; /* pornește din stânga; pentru centru => center */
+  transition: transform 0.28s ease;
+}
+
+/* la hover/focus apare linia */
+#nav-list a:hover::after,
+#nav-list a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* linkul activ rămâne subliniat */
+#nav-list a.active::after {
+  transform: scaleX(1);
+}
