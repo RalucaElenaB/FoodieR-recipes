@@ -1127,6 +1127,7 @@ button {
   #site-header {
     position: sticky;
     top: 0;
+    padding: 0.5rem 0.75rem;
   }
   body {
     padding-top: 0 !important;
@@ -1154,3 +1155,10 @@ button {
 .carousel {
   margin-top: 0;
 } /* scoate 22rem! */
+
+@media (max-width: 991.98px) {
+  .hero,
+  .hero .carousel {
+    margin-top: 0 !important;
+  }
+}
