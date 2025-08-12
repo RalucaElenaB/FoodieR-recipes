@@ -24,14 +24,21 @@
         <ul id="nav-list">
           <li><a data-i18n="nav.home" href="index.html">Home</a></li>
           <li><a data-i18n="nav.about" href="about.html">About</a></li>
-          <li><a data-i18n="nav.products" href="products.html">Recipes</a></li>
+          <li><a data-i18n="nav.recipes" href="recipes.html">Recipes</a></li>
           <li><a data-i18n="nav.blog" href="blog.html">Blog</a></li>
-          <li>
-            <button id="open-cart" class="pill" data-i18n="nav.shop">
-              Shop
-            </button>
-          </li>
+       <li>
+  <button id="open-cart" class="cart-pill" aria-label="Coș">
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M7 4h-2l-1 2h2l3.6 7.59-1.35 2.41A2 2 0 0 0 10 19h8v-2h-7.42a.25.25 0 0 1-.22-.37L11.2 14h5.3a2 2 0 0 0 1.8-1.1L21 6H7.42l-.7-2zM7 20a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+    </svg>
+    <span class="label" data-i18n="nav.shop">Cart</span>
+    <span class="count-badge" id="cart-count">0</span>
+  </button>
+</li>
+
+          
         </ul>
+        
       </nav>
 
       <div class="header-actions">
@@ -39,7 +46,7 @@
           <input
             id="search-input"
             type="search"
-            placeholder="Search recipes, ingredients, etc..."
+            placeholder="Search..."
             aria-label="Search"
           />
         </div>
@@ -83,26 +90,12 @@
           </p>
           <div class="stats">
             <div>
-              <strong>150+</strong
-              ><span data-i18n="about.stats.premium">rețete premium</span>
+              <strong>70%</strong
+              ><span data-i18n="about.stats.timep">economie de timp la gatit</span>
             </div>
             <div>
-              <strong>4.8/5</strong
-              ><span data-i18n="about.stats.rating">scor mediu recenzii</span>
-            </div>
-            <div>
-              <strong>100%</strong
-              ><span data-i18n="about.stats.steps"
-                >instrucțiuni pas-cu-pas</span
-              >
-            </div>
-            <div>
-              <strong>3k</strong
-              ><span data-i18n="about.stats.users">membri în comunitate</span>
-            </div>
-            <div>
-              <strong >120+</strong
-              ><span data-i18n="about.stats.recipes">rețete create</span>
+              <strong>20-30 minute</strong
+              ><span data-i18n="about.stats.timem">timp mediu de gatire al unei retete</span>
             </div>
             <div>
               <strong>-35%</strong
@@ -110,6 +103,21 @@
                 >calorii medii/porție</span
               >
             </div>
+            <div>
+              <strong>100%</strong
+              ><span data-i18n="about.stats.steps"
+                >instrucțiuni clare, pas cu pas</span
+              >
+            </div>
+            <div>
+              <strong>100%</strong
+              ><span data-i18n="about.stats.users">retete fara coloranti, conservanti</span>
+            </div>
+            <div>
+              <strong >100%</strong
+              ><span data-i18n="about.stats.recipes">hrana, nu doar mancare</span>
+            </div>
+            
         </div>
       </section>
 
@@ -118,7 +126,8 @@
   <div class="filters-card" id="filters">
     <h3>Filter Results</h3>
     <div class="filters-row">
-      <input id="f-author" list="authors" placeholder="Search author…">
+
+      <!-- <input id="f-author" list="authors" placeholder="Search author…"> -->
       <datalist id="authors"></datalist>
 
       <input id="f-tag" list="tags" placeholder="Search tag…">
@@ -128,22 +137,19 @@
       <datalist id="ingredients"></datalist>
 
       
-
-      
-
       <button id="f-clear" class="btn-danger">Clear Filters</button>
     </div>
   </div>
 </section>
 
 
-<!-- My Recipes (Paid) -->
-<section class="container" id="my-recipes">
+<!-- New recipes -->
+<!-- <section class="container" id="my-recipes">
   <div class="section-head about-copy">
     <h2 data-i18n="sections.myRecipes">New recipes</h2>
   </div>
   <div class="cards-grid recipe-grid" id="paid-grid"></div>
-</section>
+</section> -->
 
 
       <!-- Free Recipes -->

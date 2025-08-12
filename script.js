@@ -41,9 +41,9 @@ const I18N = {
     "about.foodier.title": "Despre FoodieR",
     "about.story":
       "FoodieR este proiectul meu de suflet: un magazin de rețete low-calorie, structurat pe nevoi, momente ale zilei și preferințe alimentare.",
-    "about.stats.premium": "rețete premium",
+    "about.stats.timep": "economie de timp la gatit",
     "about.stats.rating": "scor mediu recenzii",
-    "about.stats.steps": "instrucțiuni pas-cu-pas",
+    "about.stats.steps": "instrucțiuni clare, pas cu pas",
     // footer
     "footer.quickLinks": "Linkuri rapide",
     "footer.contactInfo": "Contact",
@@ -51,8 +51,8 @@ const I18N = {
       "Rețete low-calorie, regândite ca să fie sănătoase și gustoase. Calitate, echilibru și savoare, pe înțelesul tuturor.",
     "footer.rights": "Toate drepturile rezervate.",
     // search
-    "search.placeholder": "Caută rețete, ingrediente, etc…",
-    "search.aria": "Caută rețete",
+    "search.placeholder": "Search...",
+    "search.aria": "Caută...",
   },
   en: {
     // nav
@@ -75,7 +75,7 @@ const I18N = {
       "FoodieR is my passion project: a low-calorie recipe shop organized by needs, time of day, and dietary preferences.",
     "about.stats.premium": "premium recipes",
     "about.stats.rating": "average review score",
-    "about.stats.steps": "step-by-step instructions",
+    "about.stats.steps": "step by step instructions",
     "about.stats.users": "members in comunity",
     // footer
     "footer.quickLinks": "Quick Links",
@@ -260,6 +260,7 @@ function renderCart() {
     remove.addEventListener("click", () => removeFromCart(ci.id));
     box.appendChild(row);
   });
+
   // BOGO: if any sale item bought, allow one free item selection from sale group
   const bogoMsg = $("#bogo-msg");
   const paidSaleQty = saleItems.reduce((s, ci) => s + ci.qty, 0);
@@ -638,97 +639,162 @@ function renderBlog() {
 
 // ============ Recipe page ============
 function renderRecipePage() {
-  const wrap = $("#recipe-article");
+  const wrap = document.getElementById("recipe-article");
   if (!wrap) return;
+
+  if (!Array.isArray(RECIPES) || RECIPES.length === 0) {
+    wrap.innerHTML = `<p class="muted">Nu găsesc lista de rețete. Verifică <code>data.js</code>.</p>`;
+    return;
+  }
+
   const params = new URLSearchParams(location.search);
   const id = params.get("id");
-  const r = RECIPES.find((x) => x.id === id) || RECIPES[0];
+
+  if (!id) {
+    // fără id: oferă linkuri de test
+    wrap.innerHTML = `
+      <div class="pad">
+        <h1>Rețetă</h1>
+        <p class="muted">Nu ai specificat niciun ID de rețetă (<code>?id=...</code>).</p>
+        <p>Încearcă unul dintre exemple:</p>
+        <div class="chips">
+          ${RECIPES.slice(0, 5)
+            .map(
+              (r) =>
+                `<a class="chip" href="recipe.html?id=${r.id}">${
+                  r.lang?.ro || r.title
+                }</a>`
+            )
+            .join("")}
+        </div>
+      </div>`;
+    return;
+  }
+
+  const r = RECIPES.find((x) => x.id === id);
+  if (!r) {
+    wrap.innerHTML = `
+      <div class="pad">
+        <h1>Rețetă</h1>
+        <p class="muted">Nu găsesc rețeta cu id <code>${id}</code>.</p>
+        <p>Exemple disponibile:</p>
+        <div class="chips">
+          ${RECIPES.slice(0, 5)
+            .map(
+              (r) =>
+                `<a class="chip" href="recipe.html?id=${r.id}">${
+                  r.lang?.ro || r.title
+                }</a>`
+            )
+            .join("")}
+        </div>
+      </div>`;
+    return;
+  }
 
   const owned = r.free || State.owned.includes(r.id);
-  document.title = (r.lang[State.lang] || r.title) + " • FoodieR";
+  document.title = (r.lang?.[State.lang] || r.title) + " • FoodieR";
+
   wrap.innerHTML = `
     <div class="hero">
-      <img src="${r.img}" alt="${r.title}">
+      <img src="${r.img}" alt="${
+    r.title
+  }" onerror="this.src='assets/photos/placeholder.jpg'; this.alt='Imagine indisponibilă';">
       <div>
-        <h1>${r.lang[State.lang] || r.title}</h1>
-        <p class="muted">${r.teaser}</p>
+        <h1>${r.lang?.[State.lang] || r.title}</h1>
+        <p class="muted">${r.teaser || ""}</p>
         <div class="badges">
           ${
             r.free
               ? '<span class="badge">FREE</span>'
               : `<span class="badge">${money(r.price)}</span>`
           }
+          ${r.sale ? '<span class="badge">SALE</span>' : ""}
           ${r.vegan ? '<span class="badge">VEGAN</span>' : ""}
-          <span class="badge">${r.kcal} kcal</span>
+          ${r.kcal ? `<span class="badge">${r.kcal} kcal</span>` : ""}
         </div>
         ${
           r.free
             ? ""
-            : `<div class="actions"><button class="accent" id="buyBtn">${
-                owned ? "Deschide" : "Cumpără acum"
-              }</button></div>`
+            : `
+          <div class="actions">
+            <button class="accent" id="buyBtn">${
+              owned ? "Deschide" : "Cumpără acum"
+            }</button>
+            <button class="ghost" onclick="addToCart('${
+              r.id
+            }')">Adaugă în coș</button>
+          </div>`
         }
       </div>
     </div>
+
     <section class="pad ${owned ? "" : "locked"}" id="recipe-content">
       <h3>Ingrediente</h3>
-      <ul>${r.ingredients.map((i) => `<li>${i}</li>`).join("")}</ul>
+      <ul>${(r.ingredients || []).map((i) => `<li>${i}</li>`).join("")}</ul>
       <h3>Mod de preparare</h3>
-      <ol>${r.steps.map((s) => `<li>${s}</li>`).join("")}</ol>
-      <h3>Repartiție calorică</h3>
-      <p>Carbo: ${r.carbs}g • Proteină: ${r.protein}g • Grăsime: ${r.fat}g</p>
+      <ol>${(r.steps || []).map((s) => `<li>${s}</li>`).join("")}</ol>
+      ${
+        r.carbs != null
+          ? `<h3>Repartiție calorică</h3>
+        <p>Carbo: ${r.carbs}g • Proteină: ${r.protein}g • Grăsime: ${r.fat}g</p>`
+          : ""
+      }
     </section>
   `;
+
   if (!r.free) {
-    $("#buyBtn")?.addEventListener("click", () => {
-      if (owned)
-        document.querySelector("#recipe-content").classList.remove("locked");
-      else addToCart(r.id);
+    document.getElementById("buyBtn")?.addEventListener("click", () => {
+      const alreadyOwned = State.owned.includes(r.id);
+      if (alreadyOwned) {
+        document.getElementById("recipe-content").classList.remove("locked");
+      } else {
+        addToCart(r.id);
+      }
     });
   }
 
-  // Reviews
-  const list = $("#reviews-list");
-  const form = $("#review-form");
-  function loadReviews() {
-    return JSON.parse(localStorage.getItem("reviews:" + r.id) || "[]");
-  }
-  function saveReviews(arr) {
-    localStorage.setItem("reviews:" + r.id, JSON.stringify(arr));
-  }
-  function renderReviews() {
-    const revs = loadReviews();
-    list.innerHTML = revs.length
-      ? ""
-      : '<p class="muted">Fii primul care lasă o recenzie.</p>';
-    revs.forEach((rv) => {
-      const el = document.createElement("div");
-      el.className = "card";
-      el.innerHTML = `<div class='pad'><strong>${"★".repeat(
-        rv.stars
-      )}${"☆".repeat(5 - rv.stars)}</strong>
-        <p>${rv.text}</p><div class='muted'>de ${rv.user} • ${new Date(
-        rv.ts
-      ).toLocaleString()}</div></div>`;
-      list.appendChild(el);
-    });
-  }
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    if (!State.user) {
-      alert("Autentifică-te pentru a lăsa o recenzie.");
-      return;
+  // Recenzii
+  const list = document.getElementById("reviews-list");
+  const form = document.getElementById("review-form");
+  if (list && form) {
+    function loadReviews() {
+      return JSON.parse(localStorage.getItem("reviews:" + r.id) || "[]");
     }
-    const stars = parseInt($("#review-stars").value, 10);
-    const text = $("#review-text").value.trim();
-    if (!text) return;
-    const revs = loadReviews();
-    revs.unshift({ stars, text, user: State.user.email, ts: Date.now() });
-    saveReviews(revs);
-    $("#review-text").value = "";
+    function saveReviews(arr) {
+      localStorage.setItem("reviews:" + r.id, JSON.stringify(arr));
+    }
+    function renderReviews() {
+      const revs = loadReviews();
+      list.innerHTML = revs.length
+        ? ""
+        : '<p class="muted">Fii primul care lasă o recenzie.</p>';
+      revs.forEach((rv) => {
+        const el = document.createElement("div");
+        el.className = "card";
+        el.innerHTML = `<div class='pad'><strong>${"★".repeat(
+          rv.stars
+        )}${"☆".repeat(5 - rv.stars)}</strong>
+          <p>${rv.text}</p><div class='muted'>de ${rv.user} • ${new Date(
+          rv.ts
+        ).toLocaleString()}</div></div>`;
+        list.appendChild(el);
+      });
+    }
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!State.user) return alert("Autentifică-te pentru a lăsa o recenzie.");
+      const stars = parseInt(document.getElementById("review-stars").value, 10);
+      const text = document.getElementById("review-text").value.trim();
+      if (!text) return;
+      const revs = loadReviews();
+      revs.unshift({ stars, text, user: State.user.email, ts: Date.now() });
+      saveReviews(revs);
+      document.getElementById("review-text").value = "";
+      renderReviews();
+    });
     renderReviews();
-  });
-  renderReviews();
+  }
 }
 
 // ============ Search ============
@@ -811,13 +877,11 @@ function recipeCardHTML(r, section) {
   const owned = State.owned.includes(r.id);
   const title = r.lang?.[State.lang] || r.title;
 
-  // arată badge-ul SALE doar în lista "sale"
   const saleTag =
     section === "sale" && r.sale
       ? `<span class="tag tag-accent">SALE</span>`
       : "";
 
-  // arată prețul vechi DOAR în "sale"
   const price = r.free
     ? ""
     : section === "sale" && r.oldPrice
@@ -825,11 +889,20 @@ function recipeCardHTML(r, section) {
          <span class="price-badge">${money(r.price)}</span>`
     : `<span class="price-badge">${money(r.price)}</span>`;
 
+  // butonul principal
   const cta = r.free
-    ? `<button class="pill" onclick="location.href='recipe.html?id=${r.id}'">Deschide</button>`
+    ? `<button class="pill" onclick="location.href='recipe.html?id=${r.id}'">Vizualizează</button>`
     : `<button class="accent" data-buy="${r.id}">${
         owned ? "Vizualizează" : "Cumpără"
       }</button>`;
+
+  // butonul secundar — doar în SALE e „Cumpără”, în rest „Detalii”, iar în FREE nu e niciunul
+  let secondBtn = "";
+  if (section === "sale") {
+    secondBtn = `<button class="ghost" onclick="addToCart('${r.id}')">Cumpără</button>`;
+  } else if (!r.free) {
+    secondBtn = `<button class="ghost" onclick="location.href='recipe.html?id=${r.id}'">Detalii</button>`;
+  }
 
   return `
   <article class="recipe-card" data-id="${r.id}">
@@ -844,15 +917,13 @@ function recipeCardHTML(r, section) {
           .join("")}
         ${r.vegetarian && !r.vegan ? '<span class="tag">vegetarian</span>' : ""}
       </div>
-      <div class="meta">By ${r.author || "FoodieR"}</div>
+      <div class="meta">Autor: ${r.author || "FoodieR"}</div>
     </div>
     <div class="footer">
       ${price}
       <div class="card-actions">
         ${cta}
-        <button class="ghost" onclick="location.href='recipe.html?id=${
-          r.id
-        }'">Detalii</button>
+        ${secondBtn}
       </div>
     </div>
   </article>`;
@@ -919,13 +990,13 @@ function markActiveNav() {
 
 // ----- Filter state -----
 const Filter = {
-  author: "",
+  // author: "",
   tag: "",
   ingredient: "",
-  priceMin: "",
-  priceMax: "",
-  from: "",
-  to: "",
+  // priceMin: "",
+  // priceMax: "",
+  // from: "",
+  // to: "",
 };
 
 // returnează tag-urile pe care le folosești pe card
@@ -936,6 +1007,7 @@ function recipeTags(r) {
   if (r.category === "soup") tags.push("soup");
   if (r.vegan) tags.push("vegan");
   if (r.glutenFree) tags.push("gluten-free");
+  if (r.vegetarian && !r.vegan) tags.push("vegetarian");
   if (r.rice) tags.push("rice");
   return tags;
 }
@@ -944,22 +1016,22 @@ function recipeTags(r) {
 
 function initFilters() {
   const by = (id) => document.getElementById(id);
-  const authors = new Set();
+  // const authors = new Set();
   const tags = new Set();
   const ingredients = new Set();
 
   (RECIPES || []).forEach((r) => {
-    authors.add((r.author || "FoodieR").trim());
+    // authors.add((r.author || "FoodieR").trim());
     recipeTags(r).forEach((t) => tags.add(t));
     (Array.isArray(r.ingredients) ? r.ingredients : []).forEach((i) =>
       ingredients.add(i)
     );
   });
 
-  by("authors").innerHTML = [...authors]
-    .sort()
-    .map((a) => `<option value="${a}">`)
-    .join("");
+  // by("authors").innerHTML = [...authors]
+  //   .sort()
+  //   .map((a) => `<option value="${a}">`)
+  //   .join("");
   by("tags").innerHTML = [...tags]
     .sort()
     .map((t) => `<option value="${t}">`)
@@ -970,26 +1042,26 @@ function initFilters() {
     .join("");
 
   const inputs = [
-    "f-author",
+    // "f-author",
     "f-tag",
     "f-ingredient",
-    "f-price-min",
-    "f-price-max",
-    "f-date-from",
-    "f-date-to",
+    // "f-price-min",
+    // "f-price-max",
+    // "f-date-from",
+    // "f-date-to",
   ]
     .map((id) => by(id))
     .filter(Boolean);
 
   inputs.forEach((inp) => {
     inp.addEventListener("input", () => {
-      Filter.author = by("f-author")?.value.trim().toLowerCase() || "";
+      // Filter.author = by("f-author")?.value.trim().toLowerCase() || "";
       Filter.tag = by("f-tag")?.value.trim().toLowerCase() || "";
       Filter.ingredient = by("f-ingredient")?.value.trim().toLowerCase() || "";
-      Filter.priceMin = by("f-price-min")?.value || "";
-      Filter.priceMax = by("f-price-max")?.value || "";
-      Filter.from = by("f-date-from")?.value || "";
-      Filter.to = by("f-date-to")?.value || "";
+      // Filter.priceMin = by("f-price-min")?.value || "";
+      // Filter.priceMax = by("f-price-max")?.value || "";
+      // Filter.from = by("f-date-from")?.value || "";
+      // Filter.to = by("f-date-to")?.value || "";
       rerenderWithFilters();
     });
   });
@@ -1025,9 +1097,9 @@ function getFiltered(list) {
     if (Filter.priceMax && price > Number(Filter.priceMax)) return false;
 
     // date (așteaptă r.date = 'YYYY-MM-DD')
-    const d = r.date ? new Date(r.date) : null;
-    if (Filter.from && d && d < new Date(Filter.from)) return false;
-    if (Filter.to && d && d > new Date(Filter.to)) return false;
+    // const d = r.date ? new Date(r.date) : null;
+    // if (Filter.from && d && d < new Date(Filter.from)) return false;
+    // if (Filter.to && d && d > new Date(Filter.to)) return false;
 
     return true;
   });

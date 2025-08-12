@@ -71,6 +71,35 @@ button {
   padding: 0.4rem 0.75rem;
   border-radius: 999px;
 }
+.cart-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+  padding: 0.5rem 0.9rem;
+  border-radius: 14px;
+  cursor: pointer;
+}
+.cart-pill .icon {
+  width: 18px;
+  height: 18px;
+  fill: #fff;
+}
+.cart-pill .count-badge {
+  min-width: 1.2rem;
+  height: 1.1rem;
+  padding: 0 0.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(251, 109, 58, 0.25);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
 
 .accent {
   background: var(--accent);
@@ -173,7 +202,7 @@ button {
 
 /* Hero */
 .hero {
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
 .carousel {
   position: relative;
@@ -182,6 +211,7 @@ button {
   border: 1px solid var(--border);
   border-radius: 1.2rem;
 }
+
 .carousel-track {
   display: grid;
   grid-auto-flow: column;
@@ -211,6 +241,7 @@ button {
 .carousel-slide .copy h3 {
   margin: 0 0 0.5rem;
   color: var(--fg);
+  text-align: center;
 }
 
 .carousel-prev,
@@ -299,7 +330,6 @@ button {
 }
 
 .card {
-  background: var(--card);
   border: 1px solid var(--border);
   border-radius: 1rem;
   overflow: hidden;
@@ -317,7 +347,7 @@ button {
 }
 
 .card .price {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .card .actions {
@@ -332,10 +362,11 @@ button {
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
   align-items: center;
-  margin-top: 2rem;
+  margin-top: 3rem;
 }
 .about-copy h2 {
   color: var(--fg);
+  text-align: center;
 }
 
 .stats {
@@ -406,18 +437,7 @@ button {
   background: rgba(0, 0, 0, 0.02);
 }
 
-.footer-grid {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-}
-
-.footer-grid nav {
-  display: flex;
-  gap: 1rem;
-}
-
-/* --- Footer dark --- */
+/* --- Footer --- */
 .site-footer {
   color: #e8f1ed;
   padding-top: 2.2rem;
@@ -634,7 +654,7 @@ button {
   align-items: center;
 }
 
-/* Auth modal */
+/* Authorization modal */
 #auth-modal::backdrop {
   background: rgba(0, 0, 0, 0.35);
 }
@@ -780,6 +800,7 @@ button {
   gap: 0.4rem;
   margin-bottom: 0.6rem;
 }
+
 .tag {
   font-size: 0.8rem;
   padding: 0.25rem 0.5rem;
@@ -787,6 +808,7 @@ button {
   background: rgba(0, 0, 0, 0.06);
   border: 1px solid var(--border);
 }
+
 [data-theme="dark"] .tag {
   background: rgba(255, 255, 255, 0.08);
 }
@@ -806,11 +828,11 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 16px 14px;
+  padding: 2px 2px 2px;
 }
 
 .price-badge {
-  font-weight: 700;
+  font-weight: 500;
   padding: 0.25rem 0.55rem;
   border-radius: 8px;
   background: rgba(251, 109, 58, 0.12);
@@ -822,15 +844,22 @@ button {
   display: flex;
   gap: 0.5rem;
 }
+
 .card-actions .pill,
 .card-actions .accent {
-  padding: 0.45rem 0.7rem;
+  padding: 0.45rem 0.5rem;
 }
 
 .price-old {
   opacity: 0.7;
   text-decoration: line-through;
-  margin-right: 0.4rem;
+  margin-right: 0.2rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
+  background: rgba(251, 109, 58, 0.12);
+  color: #fb6d3a;
+  border: 1px solid rgba(251, 109, 58, 0.35);
 }
 
 /* Filters panel */
@@ -873,11 +902,22 @@ button {
   padding: 0.55rem 0.9rem;
   border-radius: 10px;
   border: 0;
-  background: #e65353;
+  background: #fb6d3a;
   color: #fff;
   font-weight: 600;
   cursor: pointer;
 }
+
 .btn-danger:hover {
   filter: brightness(0.95);
+  background: rgb(167, 218, 200);
+}
+
+.recipe-card .meta {
+  display: block;
+}
+.price-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
