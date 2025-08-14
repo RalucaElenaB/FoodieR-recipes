@@ -1205,3 +1205,17 @@ button {
   border-color: var(--accent);
   color: var(--accent);
 }
+
+/*Cos pe mobil si modal rearanjat */
+@media (max-width: 720px) {
+  #open-cart {
+    display: flex !important;
+    position: relative;
+    top: 0;
+    right: 0;
+  }
+  #cart-drawer {
+    width: 100%;
+    max-width: 100%;
+  }
+}

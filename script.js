@@ -144,6 +144,10 @@ function initHeader() {
     applyTheme();
   });
 
+  $("#auth-modal button[value='cancel']")?.addEventListener("click", () => {
+    $("#auth-modal").close();
+  });
+
   // Auth buttons
   const loginBtn = $("#login-btn");
   const logoutBtn = $("#logout-btn");
@@ -824,11 +828,17 @@ function initSearch() {
   if (!input) return;
   input.addEventListener("input", () => {
     const q = input.value.toLowerCase();
-    const results = RECIPES.filter(
-      (r) =>
+    const results = RECIPES.filter((r) => {
+      const titleMatch =
         (r.lang.ro || r.title).toLowerCase().includes(q) ||
-        (r.lang.en || "").toLowerCase().includes(q)
-    );
+        (r.lang.en || "").toLowerCase().includes(q);
+      const ingredientsMatch = (r.ingredients || []).some((i) =>
+        i.toLowerCase().includes(q)
+      );
+      const tagsMatch = recipeTags(r).some((t) => t.toLowerCase().includes(q));
+      return titleMatch || ingredientsMatch || tagsMatch;
+    });
+
     const grid = $("#free-grid");
     if (!grid) return;
     if (!q) {
