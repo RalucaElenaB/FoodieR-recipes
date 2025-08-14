@@ -567,6 +567,7 @@ button {
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   margin: 0;
 }
+
 .footer-bottom {
   padding: 0.9rem 0 1.2rem;
   font-size: 0.95rem;
@@ -574,34 +575,12 @@ button {
   text-align: center;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 640px) {
   .footer-columns {
-    grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 coloane egale */
-    gap: 0.75rem;
-    text-align: left; /* păstrează alinierea */
-  }
-
-  .footer-columns .col {
-    font-size: 0.85rem; /* text mai mic */
-    min-width: 0; /* previne forțarea lățimii */
-    word-wrap: break-word; /* sparge cuvintele dacă sunt lungi */
-  }
-
-  .footer-columns .logo img {
-    width: 24px;
-    height: 24px;
-  }
-
-  .footer-columns h4 {
-    font-size: 0.9rem; /* micșorează titlurile */
-  }
-
-  .footer-columns p,
-  .footer-columns a {
-    font-size: 0.8rem; /* micșorează textul */
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
   }
 }
-
 /* Cart drawer */
 #cart-drawer {
   position: fixed;
