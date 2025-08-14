@@ -17,19 +17,26 @@
   </head>
 
   <body>
-    <header id="site-header" class="container">
-      <a class="logo" href="index.html">
-        <img src="assets/photos/logo.jpg" alt="FoodieR" />
-        <span>FoodieR</span>
-      </a>
-      <nav id="main-nav">
-        <button id="burger" aria-label="Menu" aria-expanded="false">☰</button>
-        <ul id="nav-list">
-          <!-- <li><a data-i18n="nav.home" href="index.html">Home</a></li>
-          <li><a data-i18n="nav.about" href="about.html">About</a></li>
-          <li><a data-i18n="nav.recipes" href="recipes.html">Recipes</a></li>
-          <li><a data-i18n="nav.blog" href="blog.html">Blog</a></li> -->
-     
+    <header id="site-header">
+  <!-- Logo -->
+  <a class="logo" href="index.html">
+    <img src="assets/photos/logo.jpg" alt="FoodieR" />
+    <span>FoodieR</span>
+  </a>
+
+  <!-- Navigație -->
+  <nav id="main-nav">
+    <button id="burger" aria-label="Menu" aria-expanded="false">☰</button>
+    <ul id="nav-list">
+      <!-- Ex: link-uri meniu -->
+      <!--
+      <li><a data-i18n="nav.home" href="index.html">Home</a></li>
+      <li><a data-i18n="nav.about" href="about.html">About</a></li>
+      -->
+    </ul>
+  </nav>
+
+  <!-- Buton coș -->
   <button id="open-cart" class="cart-pill" aria-label="Coș">
     <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
       <path d="M7 4h-2l-1 2h2l3.6 7.59-1.35 2.41A2 2 0 0 0 10 19h8v-2h-7.42a.25.25 0 0 1-.22-.37L11.2 14h5.3a2 2 0 0 0 1.8-1.1L21 6H7.42l-.7-2zM7 20a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
@@ -37,33 +44,27 @@
     <span class="label" data-i18n="nav.shop">Cart</span>
     <span class="count-badge" id="cart-count">0</span>
   </button>
-     
-       </ul>
-      </nav>
 
-      <div class="header-actions">
-        <div class="search">
-          <input
-            id="search-input"
-            type="search"
-            placeholder="Search..."
-            aria-label="Search"
-          />
-        </div>
+  <!-- Acțiuni header -->
+  <div class="header-actions">
+    <div class="search">
+      <input
+        id="search-input"
+        type="search"
+        placeholder="Search..."
+        aria-label="Search"
+      />
+    </div>
 
-        <button id="toggle-lang" class="ghost" aria-label="RO/EN">RO/EN</button>
-        <button id="toggle-theme" class="ghost" aria-label="Dark/Light">
-          🌓
-        </button>
-        
-        <button id="login-btn" class="accent" data-i18n="auth.login">
-          Log in
-        </button>
-        <button id="logout-btn" class="ghost hidden" data-i18n="auth.logout">
-          Logout
-        </button>
-      </div>
-    </header>
+    <button id="toggle-lang" class="ghost" aria-label="RO/EN">RO/EN</button>
+    <button id="toggle-theme" class="ghost" aria-label="Dark/Light">🌓</button>
+
+    <button id="login-btn" class="accent" data-i18n="auth.login">Log in</button>
+    <button id="logout-btn" class="ghost hidden" data-i18n="auth.logout">
+      Logout
+    </button>
+  </div>
+</header>
 
     <main>
       <!-- Hero Carousel -->
