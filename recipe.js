@@ -1,93 +1,49 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const wrap = document.getElementById("recipe-article");
-  if (!wrap) return;
+  const params = new URLSearchParams(window.location.search);
+  const recipeId = params.get("id");
 
-  const id = new URLSearchParams(location.search).get("id");
-  if (!id) {
-    wrap.innerHTML = `<p class="muted">Lipsește parametrul <code>?id=...</code>.</p>`;
-    return;
-  }
-  const r = (window.RECIPES || []).find((x) => x.id === id);
-  if (!r) {
-    wrap.innerHTML = `<p class="muted">Nu găsesc rețeta cu id <code>${id}</code>.</p>`;
+  const recipe = RECIPES.find((r) => r.id === recipeId);
+
+  if (!recipe) {
+    document.getElementById("recipe-article").innerHTML =
+      "<p>Rețetă negăsită.</p>";
     return;
   }
 
-  document.title = (r.lang?.ro || r.title) + " • FoodieR";
-  const nutrition =
-    r.nutrition ||
-    (r.kcal
-      ? { kcal: r.kcal, protein: r.protein, carbs: r.carbs, fat: r.fat }
-      : null);
+  // Nume în funcție de limbă
+  let name = recipe.title;
+  if (recipe.lang) {
+    name = State?.lang === "en" ? recipe.lang.en : recipe.lang.ro;
+  }
 
-  wrap.innerHTML = `
-    <header class="recipe-hero">
-      <div class="media">
-        <img src="${r.img}" alt="${
-    r.title
-  }" onerror="this.src='assets/photos/placeholder.jpg'">
-      </div>
-      <div class="meta">
-        <h1>${r.lang?.ro || r.title}</h1>
-        <p class="muted">${r.teaser || ""}</p>
-        <div class="badges">
-          ${
-            r.free
-              ? '<span class="badge">FREE</span>'
-              : `<span class="badge">${(r.price || 0).toFixed(0)} lei</span>`
-          }
-          ${r.sale ? '<span class="badge">SALE</span>' : ""}
-          ${r.vegan ? '<span class="badge">VEGAN</span>' : ""}
-          ${
-            nutrition?.kcal
-              ? `<span class="badge">${nutrition.kcal} kcal</span>`
-              : ""
-          }
-        </div>
-      </div>
-    </header>
+  // Descriere
+  const desc = recipe.teaser || "";
 
-    <section class="pad">
-      <div class="two-col">
-        <div>
-          <h3>Ingrediente</h3>
-          <ul class="ing-list">
-            ${(r.ingredients || []).map((i) => `<li>${i}</li>`).join("")}
-          </ul>
-        </div>
-        <div>
-          <h3>Mod de preparare</h3>
-          <ol class="steps">
-            ${(r.steps || []).map((s) => `<li>${s}</li>`).join("")}
-          </ol>
-        </div>
-      </div>
+  document.getElementById("recipe-article").innerHTML = `
+    <h1>${name}</h1>
+    <img src="${
+      recipe.img
+    }" alt="${name}" style="max-width:100%; border-radius:8px;">
+    
+    ${recipe.kcal ? `<p><strong>Calorii:</strong> ${recipe.kcal} kcal</p>` : ""}
+    ${
+      recipe.carbs
+        ? `<p><strong>Carbohidrați:</strong> ${recipe.carbs} g</p>`
+        : ""
+    }
+    ${
+      recipe.protein
+        ? `<p><strong>Proteine:</strong> ${recipe.protein} g</p>`
+        : ""
+    }
+    ${recipe.fat ? `<p><strong>Grăsimi:</strong> ${recipe.fat} g</p>` : ""}
 
-      ${
-        nutrition
-          ? `
-      <h3>Valori nutriționale (per porție)</h3>
-      <table class="nutri-table">
-        <tbody>
-          ${Object.entries(nutrition)
-            .map(([k, v]) => `<tr><th>${labelMacro(k)}</th><td>${v}</td></tr>`)
-            .join("")}
-        </tbody>
-      </table>`
-          : ""
-      }
-    </section>
+    <p>${desc}</p>
+
+    <h2>Ingrediente</h2>
+    <ul>${(recipe.ingredients || []).map((i) => `<li>${i}</li>`).join("")}</ul>
+
+    <h2>Instrucțiuni</h2>
+    <ol>${(recipe.steps || []).map((step) => `<li>${step}</li>`).join("")}</ol>
   `;
-
-  function labelMacro(k) {
-    const map = {
-      kcal: "Calorii",
-      protein: "Proteină (g)",
-      carbs: "Carbohidrați (g)",
-      fat: "Grăsimi (g)",
-      fiber: "Fibre (g)",
-      sugar: "Zaharuri (g)",
-    };
-    return map[k] || k;
-  }
 });

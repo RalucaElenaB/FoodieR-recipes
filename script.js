@@ -495,6 +495,7 @@ function renderFreeGrid() {
           r.id
         }'">Vizualizeaza</button>
       </div>`;
+
     grid.appendChild(el);
   });
 }
@@ -522,6 +523,31 @@ function renderSaleGrid() {
       addToCart(r.id)
     );
     grid.appendChild(el);
+  });
+}
+
+function renderRecipeGrid(recipes, gridId) {
+  const grid = document.getElementById(gridId);
+  if (!grid) return;
+
+  grid.innerHTML = "";
+
+  recipes.forEach((recipe) => {
+    const card = document.createElement("article");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${recipe.img}" alt="${recipe.title}">
+      <div class="pad">
+        <h4>${recipe.lang?.ro || recipe.title}</h4>
+        <p class="muted">${recipe.teaser || ""}</p>
+        <button class="pill" onclick="location.href='recipe.html?id=${
+          recipe.id
+        }'">
+          Vizualizează
+        </button>
+      </div>
+    `;
+    grid.appendChild(card);
   });
 }
 
@@ -1414,3 +1440,37 @@ function renderRecipePage() {
   });
   renderReviews();
 }
+
+function renderRecipeGrid(recipes, gridId) {
+  const grid = document.getElementById(gridId);
+  if (!grid) return;
+
+  grid.innerHTML = "";
+
+  recipes.forEach((recipe) => {
+    const card = document.createElement("article");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${recipe.img}" alt="${recipe.title}">
+      <div class="pad">
+        <h4>${recipe.lang?.ro || recipe.title}</h4>
+        <p class="muted">${recipe.teaser || ""}</p>
+        <div class="tags">
+          ${(recipe.tags || [])
+            .map((tag) => `<span class="tag">${tag}</span>`)
+            .join("")}
+        </div>
+        <p class="author">Autor: ${recipe.author || "FoodieR"}</p>
+        <button class="pill" onclick="location.href='recipe.html?id=${
+          recipe.id
+        }'">
+          Vizualizează
+        </button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+renderRecipeGrid(RECIPES, "free-grid");
+renderRecipeGrid(SPECIAL_RECIPES, "special-grid");
