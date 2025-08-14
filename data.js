@@ -47,6 +47,8 @@ const RECIPES = [
     category: "soup", // "main" | "dessert" | "soup" etc.
     vegan: true, // pentru tag-uri
     author: "FoodieR", // opțional (default: FoodieR)
+    price: 15, // prețul redus
+    oldPrice: 29, // (opțional) preț vechi pt. tăiat
     // câmpuri pentru pagina de rețetă (se afișează după click):
     kcal: 160,
     carbs: 22,

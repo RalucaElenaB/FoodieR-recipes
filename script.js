@@ -312,9 +312,8 @@ function renderHero() {
       <div class="copy">
         <h3>${State.lang === "ro" ? cat.nameRO : cat.nameEN}</h3>
         <p class="muted">${State.lang === "ro" ? cat.descRO : cat.descEN}</p>
-        <button class="accent" onclick="location.href='products.html#${
-          cat.id
-        }'">Shop</button>
+        <button class="accent" onclick="document.querySelector('#special-sale').scrollIntoView({behavior: 'smooth'})">Shop</button>
+
       </div>
       <img src="${cat.img}" alt="${cat.nameRO}" loading="lazy">`;
     track.appendChild(slide);
@@ -494,7 +493,7 @@ function renderFreeGrid() {
         <p class="muted">${r.teaser}</p>
         <button class="pill" onclick="location.href='recipe.html?id=${
           r.id
-        }'">Deschide</button>
+        }'">Vizualizeaza</button>
       </div>`;
     grid.appendChild(el);
   });

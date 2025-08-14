@@ -490,12 +490,11 @@ button {
   border-top: 1px dashed var(--border);
   padding: 2rem 0;
   background: rgba(0, 0, 0, 0.02);
-  color: #e8f1ed;
   padding-top: 2.2rem;
 }
 
 .site-footer a {
-  color: #e8f1ed;
+  color: black;
   opacity: 0.9;
 }
 
@@ -640,7 +639,7 @@ button {
 }
 @media (max-width: 640px) {
   .footer-columns {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 1.25rem;
   }
 }
