@@ -576,12 +576,15 @@ button {
 
 @media (max-width: 900px) {
   .footer-columns {
-    grid-template-columns: repeat(3, 1fr); /* 3 coloane egale */
+    grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 coloane egale */
     gap: 0.75rem;
+    text-align: left; /* păstrează alinierea */
   }
 
   .footer-columns .col {
     font-size: 0.85rem; /* text mai mic */
+    min-width: 0; /* previne forțarea lățimii */
+    word-wrap: break-word; /* sparge cuvintele dacă sunt lungi */
   }
 
   .footer-columns .logo img {
@@ -590,11 +593,12 @@ button {
   }
 
   .footer-columns h4 {
-    font-size: 0.9rem;
+    font-size: 0.9rem; /* micșorează titlurile */
   }
 
-  .site-footer p {
-    font-size: 0.8rem;
+  .footer-columns p,
+  .footer-columns a {
+    font-size: 0.8rem; /* micșorează textul */
   }
 }
 
