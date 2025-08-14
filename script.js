@@ -543,7 +543,7 @@ function renderRecipeGrid(recipes, gridId) {
         <button class="pill" onclick="location.href='recipe.html?id=${
           recipe.id
         }'">
-          Vizualizează
+          Add to cart
         </button>
       </div>
     `;
