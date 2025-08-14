@@ -485,19 +485,18 @@ button {
 }
 
 /* Footer */
+/* Footer */
 .site-footer {
   margin-top: 3rem;
   border-top: 1px dashed var(--border);
-  padding: 2rem 0;
+  padding: 2.2rem 0;
   background: rgba(0, 0, 0, 0.02);
-  padding-top: 2.2rem;
 }
 
 .site-footer a {
   color: black;
   opacity: 0.9;
 }
-
 .site-footer a:hover {
   opacity: 1;
 }
@@ -505,7 +504,7 @@ button {
 .site-footer h4 {
   margin: 0 0 0.7rem;
   color: var(--fg);
-} /* #fb6d3a accent */
+}
 
 .footer-columns {
   display: grid;
@@ -522,43 +521,37 @@ button {
   font-weight: 800;
   color: var(--fg);
 }
-
 .site-footer .logo img {
   width: 28px;
   height: 28px;
 }
 
-.site-footer .links ul,
-.site-footer .contact-list {
+.site-footer ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-
-.site-footer .links li {
+.site-footer li {
   margin: 0.4rem 0;
 }
 
-.site-footer .contact-list li {
+.contact-list li {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  margin: 0.45rem 0;
 }
-
 .site-footer .icon {
   width: 18px;
   height: 18px;
   opacity: 0.85;
 }
 
-.site-footer .social {
+.social {
   display: flex;
   gap: 0.5rem;
   margin-top: 0.6rem;
 }
-
-.site-footer .social-btn {
+.social-btn {
   display: inline-grid;
   place-items: center;
   width: 30px;
@@ -566,8 +559,7 @@ button {
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.08);
 }
-
-.site-footer .social-btn:hover {
+.social-btn:hover {
   background: rgba(255, 255, 255, 0.15);
 }
 
@@ -576,70 +568,17 @@ button {
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   margin: 0;
 }
-
 .footer-bottom {
   padding: 0.9rem 0 1.2rem;
   font-size: 0.95rem;
   opacity: 0.9;
-}
-
-/* fără bullets în footer */
-.footer-dark ul {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
-}
-
-/* rând pe orizontală pentru fiecare contact */
-.footer-dark .contact-list li {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  margin: 0.45rem 0;
-}
-
-/* dimensiuni iconițe, indiferent că sunt <img> sau <svg> */
-.footer-dark .contact .icon,
-.footer-dark .contact svg {
-  width: 18px;
-  height: 18px;
-  flex: 0 0 18px;
-}
-
-/* butoane social media mici și aliniate */
-.footer-dark .social {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.6rem;
-}
-
-.footer-dark .social-btn {
-  display: inline-grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.footer-dark .social-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.footer-dark .social-btn .icon {
-  width: 16px;
-  height: 16px;
+  text-align: center;
 }
 
 /* Responsive */
 @media (max-width: 900px) {
   .footer-columns {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-@media (max-width: 640px) {
-  .footer-columns {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr; /* 3 coloane și pe mobil */
     gap: 1.25rem;
   }
 }
