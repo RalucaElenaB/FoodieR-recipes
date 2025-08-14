@@ -12,7 +12,7 @@
         ><img src="assets/photos/logo.jpg" alt="FoodieR" /><span>FoodieR</span></a
       >
       <nav id="main-nav">
-        <button id="burger" aria-label="Menu" aria-expanded="false">☰</button>
+        <!-- <button id="burger" aria-label="Menu" aria-expanded="false">☰</button> -->
         <ul id="nav-list">
           <!-- <li><a href="index.html">Home</a></li>
         
@@ -21,6 +21,27 @@
           <li><button id="open-cart" class="pill">Shop</button></li> -->
         </ul>
       </nav>
+
+        <!-- Buton coș -->
+  <button id="open-cart" class="cart-pill" aria-label="Coș">
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M7 4h-2l-1 2h2l3.6 7.59-1.35 2.41A2 2 0 0 0 10 19h8v-2h-7.42a.25.25 0 0 1-.22-.37L11.2 14h5.3a2 2 0 0 0 1.8-1.1L21 6H7.42l-.7-2zM7 20a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+    </svg>
+    <span class="label" data-i18n="nav.shop">Cart</span>
+    <span class="count-badge" id="cart-count">0</span>
+  </button>
+
+  <!-- Acțiuni header -->
+  <div class="header-actions">
+    <div class="search">
+      <input
+        id="search-input"
+        type="search"
+        placeholder="Search..."
+        aria-label="Search"
+      />
+    </div>
+    
       <div class="header-actions">
         <button id="toggle-lang" class="ghost">RO/EN</button>
         <button id="toggle-theme" class="ghost">🌓</button>
